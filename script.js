@@ -436,6 +436,9 @@ function ensureCompareUi() {
     document.getElementById('compareModal')?.addEventListener('click', e => {
         if (e.target === document.getElementById('compareModal')) closeCompareModal();
     });
+    window.addEventListener('resize', () => {
+        if (document.getElementById('compareModal')?.classList.contains('open')) renderCompareTable();
+    }, { passive: true });
 }
 
 function renderCompareBar() {
@@ -505,6 +508,34 @@ function renderCompareTable() {
         ['Метка', p => parseProductSpecs(p).badge],
         ['Описание', p => p.desc || '—'],
     ];
+
+    if (window.matchMedia('(max-width: 640px)').matches) {
+        wrap.innerHTML = `
+            <div class="compare-mobile-list">
+                ${items.map(p => `
+                    <article class="compare-mobile-card">
+                        <div class="compare-mobile-head">
+                            <img src="${escapeHtml(p.img)}" alt="${escapeHtml(p.name)}" onerror="this.style.display='none'">
+                            <div>
+                                <h4>${escapeHtml(p.name)}</h4>
+                                <strong>${Number(p.price).toLocaleString()} ₽</strong>
+                            </div>
+                            <button type="button" class="compare-remove" onclick="removeFromCompare(${p.id})" title="Убрать">&times;</button>
+                        </div>
+                        <div class="compare-mobile-specs">
+                            ${rows.filter((_, index) => index !== 1).map(([label, getter]) => `
+                                <div class="compare-mobile-row">
+                                    <span>${label}</span>
+                                    <p>${escapeHtml(getter(p))}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </article>
+                `).join('')}
+            </div>
+        `;
+        return;
+    }
 
     wrap.innerHTML = `
         <table class="compare-table">
