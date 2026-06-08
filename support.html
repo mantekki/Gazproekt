@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сервис и поддержка | Газпроект Сервис Автоматика</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="header">
+    <div class="container nav-wrapper">
+        <a href="index.html" class="logo">Газпроект<span>Сервис Автоматика</span></a>
+        <nav class="nav">
+            <ul class="nav-list">
+                <li><a href="catalog.html">Каталог</a></li>
+                <li><a href="about.html">О компании</a></li>
+                <li><a href="support.html" class="active">Сервис</a></li>
+                <li><a href="delivery.html">Доставка</a></li>
+                <li><a href="docs.html">Документы</a></li>
+                <li><a href="contact.html">Контакты</a></li>
+            </ul>
+        </nav>
+        <div class="header-actions">
+            <button class="auth-btn" id="openAuth"><i class="fa-solid fa-user"></i> Войти</button>
+            <div class="cart-icon" id="openCart"><i class="fa-solid fa-cart-shopping"></i><span id="cart-count">0</span></div>
+            <div class="burger" id="burger"><span></span></div>
+        </div>
+    </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+    <a href="catalog.html">Каталог</a>
+    <a href="about.html">О компании</a>
+    <a href="support.html">Сервис</a>
+    <a href="delivery.html">Доставка</a>
+    <a href="docs.html">Документы</a>
+    <a href="contact.html">Контакты</a>
+</div>
+
+<div class="page-hero">
+    <div class="container">
+        <div class="section-tag animate-up">Сервис</div>
+        <h1 class="animate-up-delay">Поддержка, проверка<br>и сопровождение</h1>
+        <p class="animate-up-delay-2">Регламентные работы, калибровка и быстрые консультации инженеров для непрерывной работы ваших объектов</p>
+    </div>
+</div>
+
+<!-- Service cards -->
+<section class="features">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-tag">Возможности</div>
+            <h2>Что мы делаем</h2>
+            <p>Полный цикл сервиса: от пуско‑наладки до плановой проверки и удалённого мониторинга</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                <h3>Пуско‑наладка</h3>
+                <p>Выезд инженера, настройка под вашу систему, проверка каналов и обучение персонала.</p>
+                <div class="feature-num">01</div>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                <h3>Проверка и калибровка</h3>
+                <p>Консультации по проверке и калибровке оборудования, помощь с документами производителя и условиями эксплуатации.</p>
+                <div class="feature-num">02</div>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <h3>Сервисные контракты</h3>
+                <p>SLA, регламентные осмотры, склад ЗИП и приоритетная линия поддержки 24/7.</p>
+                <div class="feature-num">03</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SLA strip -->
+<div class="stats-strip">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-block"><div class="num">2 ч</div><div class="label">Реакция на заявку</div></div>
+            <div class="stat-block"><div class="num">4 ч</div><div class="label">Выезд инженера</div></div>
+            <div class="stat-block"><div class="num">3 дн</div><div class="label">Проверка (от)</div></div>
+            <div class="stat-block"><div class="num">5 лет</div><div class="label">Гарантия до</div></div>
+        </div>
+    </div>
+</div>
+
+<!-- FAQ -->
+<section class="faq-section">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-tag">FAQ</div>
+            <h2>Частые вопросы</h2>
+            <p>Собрали ответы на самые популярные вопросы по эксплуатации и обслуживанию</p>
+        </div>
+        <div class="faq-grid">
+            <details class="faq-item reveal">
+                <summary>
+                    <span>Как часто нужна проверка датчиков?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+                <div class="faq-body">
+                    Для большинства моделей — 1 раз в год. Точный интервал зависит от условий эксплуатации и регламента предприятия.
+                </div>
+            </details>
+            <details class="faq-item reveal">
+                <summary>
+                    <span>Есть ли удалённая диагностика?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+                <div class="faq-body">
+                    Да. Для IoT‑линеек доступна удалённая диагностика по MQTT/Modbus, включая уведомления о событиях и отчёты.
+                </div>
+            </details>
+            <details class="faq-item reveal">
+                <summary>
+                    <span>Какие документы вы выдаёте после работ?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+                <div class="faq-body">
+                    Акт выполненных работ, протокол калибровки/проверки (при необходимости), рекомендации по эксплуатации и следующий интервал обслуживания.
+                </div>
+            </details>
+            <details class="faq-item reveal">
+                <summary>
+                    <span>Как оформить сервисный контракт?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+                <div class="faq-body">
+                    Оставьте заявку в разделе «Контакты» — мы уточним парк оборудования, критичность объектов и предложим 2–3 варианта SLA.
+                </div>
+            </details>
+        </div>
+        <div class="text-page-cta--loose inline-btn-row">
+            <a href="contact.html" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Оставить заявку на сервис</a>
+            <a href="catalog.html" class="btn btn-outline"><i class="fa-solid fa-list"></i> Выбрать оборудование</a>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-info"><a href="index.html" class="logo">Газпроект<span>Сервис Автоматика</span></a><p>ООО «Газпроектсервисавтоматика» — поставка и сопровождение газоаналитического оборудования.</p></div>
+            <div class="footer-col">
+                <h4>Разделы</h4>
+                <a href="catalog.html">Каталог</a>
+                <a href="about.html">О нас</a>
+                <a href="support.html">Сервис</a>
+                <a href="contact.html">Контакты</a>
+            </div>
+            <div class="footer-col"><h4>Продукция</h4><a href="#">Датчики газа</a><a href="#">Газоанализаторы</a><a href="#">Течеискатели</a></div>
+            <div class="footer-col"><h4>Подписка</h4><form class="sub-form" onsubmit="return false"><input type="email" placeholder="Email"><button type="submit"><i class="fa-solid fa-paper-plane"></i></button></form></div>
+        </div>
+        <div class="footer-bottom"><p>© 2025 ООО «Газпроектсервисавтоматика». Все права защищены.</p><div class="footer-socials"><a href="#"><i class="fa-brands fa-telegram"></i></a><a href="#"><i class="fa-brands fa-vk"></i></a><a href="#"><i class="fa-solid fa-envelope"></i></a></div></div>
+    </div>
+</footer>
+
+<div class="modal-overlay" id="authModal"><div class="modal-content"><div class="modal-header"><h3>Личный кабинет</h3><p>Вход и регистрация</p></div><button type="button" class="close-modal" id="closeAuth">&times;</button><div class="modal-tabs"><button type="button" class="tab-btn active" data-tab="login">Вход</button><button type="button" class="tab-btn" data-tab="reg">Регистрация</button></div><form id="loginForm" class="auth-form active" onsubmit="return false"><input type="email" placeholder="Email"><input type="password" placeholder="Пароль"><button type="submit" class="btn btn-primary btn-block">Войти</button></form><form id="regForm" class="auth-form" onsubmit="return false"><input type="text" placeholder="Компания"><input type="email" placeholder="Email"><input type="password" placeholder="Пароль"><button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button></form></div></div>
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-drawer" id="cartDrawer"><div class="cart-header"><h3>Корзина</h3><button class="cart-close" id="closeCart">&times;</button></div><div class="cart-items" id="cartItems"><div class="cart-empty"><i class="fa-solid fa-cart-shopping"></i><p>Корзина пуста</p></div></div><div class="cart-footer"><div class="cart-total"><span>Итого</span><strong id="cartTotal">0 ₽</strong></div><button class="checkout-btn">Оформить заказ</button></div></div>
+<div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastMsg">Готово!</span></div>
+
+<script src="script.js"></script>
+</body>
+</html>

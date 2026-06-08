@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Газпроект Сервис Автоматика | Промышленное газовое оборудование</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-home">
+
+<header class="header" id="header">
+    <div class="container nav-wrapper">
+        <a href="index.html" class="logo">Газпроект<span>Сервис Автоматика</span></a>
+        <nav class="nav">
+            <ul class="nav-list">
+                <li><a href="catalog.html">Каталог</a></li>
+                <li><a href="about.html">О компании</a></li>
+                <li><a href="support.html">Сервис</a></li>
+                <li><a href="delivery.html">Доставка</a></li>
+                <li><a href="docs.html">Документы</a></li>
+                <li><a href="contact.html">Контакты</a></li>
+            </ul>
+        </nav>
+        <div class="header-actions">
+            <button class="auth-btn" id="openAuth"><i class="fa-solid fa-user"></i> Войти</button>
+            <div class="cart-icon" id="openCart">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span id="cart-count">0</span>
+            </div>
+            <div class="burger" id="burger"><span></span></div>
+        </div>
+    </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+    <a href="catalog.html">Каталог</a>
+    <a href="about.html">О компании</a>
+    <a href="support.html">Сервис</a>
+    <a href="delivery.html">Доставка</a>
+    <a href="docs.html">Документы</a>
+    <a href="contact.html">Контакты</a>
+</div>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="container hero-grid">
+        <div class="hero-text">
+            <div class="hero-tag animate-up"><i class="fa-solid fa-circle-check"></i> Газоаналитическое оборудование 2025</div>
+            <h1 class="animate-up-delay">Точность в каждом<br><em>кубометре</em></h1>
+            <p class="hero-sub animate-up-delay-2">Поставка датчиков газа, газоанализаторов и приборов промышленного контроля. ООО «Газпроектсервисавтоматика» работает в Оренбурге с 2015 года. Гарантия до 5 лет.</p>
+            <div class="hero-btns animate-up-delay-2">
+                <a href="catalog.html" class="btn btn-primary"><i class="fa-solid fa-microchip"></i> Перейти в каталог</a>
+                <a href="#features" class="btn btn-outline">Наши технологии</a>
+            </div>
+            <div class="hero-stats animate-up-delay-2">
+                <div class="stat-item">
+                    <div class="stat-num"><span data-count="2015">0</span></div>
+                    <div class="stat-label">Работаем с</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num"><span data-count="5" data-suffix=" лет">0</span></div>
+                    <div class="stat-label">Гарантия до</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num stat-num-text">24/<span>7</span></div>
+                    <div class="stat-label">Поддержка клиентов</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-num">Орен<span>бург</span></div>
+                    <div class="stat-label">Адрес компании</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual animate-up-delay">
+            <div class="hero-panel">
+                <div class="panel-header">
+                    <div class="panel-dots"><span></span><span></span><span></span></div>
+                    <div class="panel-title-bar">Мониторинг — Блок А-07</div>
+                    <div class="panel-status-badge">Онлайн</div>
+                </div>
+                <div class="panel-body">
+                    <div class="gauge-row">
+                        <div class="gauge-item g1">
+                            <div class="gauge-label"><span>CH₄ Метан</span><span>0.018%</span></div>
+                            <div class="gauge-track"><div class="gauge-fill"></div></div>
+                        </div>
+                        <div class="gauge-item g2">
+                            <div class="gauge-label"><span>CO₂ Углекислый газ</span><span>630 ppm</span></div>
+                            <div class="gauge-track"><div class="gauge-fill"></div></div>
+                        </div>
+                        <div class="gauge-item g3">
+                            <div class="gauge-label"><span>O₂ Кислород</span><span>20.9%</span></div>
+                            <div class="gauge-track"><div class="gauge-fill"></div></div>
+                        </div>
+                        <div class="gauge-item g4">
+                            <div class="gauge-label"><span>H₂S Сероводород</span><span>4.5 ppm</span></div>
+                            <div class="gauge-track"><div class="gauge-fill"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <div class="panel-footer-text">Все параметры в норме</div>
+                    <div class="panel-time" id="panelTime">--:--:--</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Strip -->
+<div class="stats-strip">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-block">
+                <div class="num"><span data-count="2015">0</span></div>
+                <div class="label">Работаем с 2015 года</div>
+            </div>
+            <div class="stat-block">
+                <div class="num"><i class="fa-solid fa-gauge-high"></i></div>
+                <div class="label">Подбор газового оборудования</div>
+            </div>
+            <div class="stat-block">
+                <div class="num"><span data-count="4" data-suffix=" ч">0</span></div>
+                <div class="label">Выезд инженера</div>
+            </div>
+            <div class="stat-block">
+                <div class="num stat-num-text">5 лет</div>
+                <div class="label">Гарантия на оборудование</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="trust-strip">
+    <div class="container trust-strip-inner">
+        <span class="trust-strip-label">Преимущества</span>
+        <div class="trust-logos">
+            <span class="trust-logo">Оренбург</span>
+            <span class="trust-logo">С 2015 года</span>
+            <span class="trust-logo">Датчики газа</span>
+            <span class="trust-logo">Газоанализаторы</span>
+            <span class="trust-logo">Выезд инженера</span>
+            <span class="trust-logo">Гарантия до 5 лет</span>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section class="features" id="features">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-tag">Преимущества</div>
+            <h2>Почему выбирают Газпроект Сервис Автоматика</h2>
+            <p>Надёжность, подбор и поддержка — основа работы компании с 2015 года</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <h3>Надёжность</h3>
+                <p>Поставляем оборудование для контроля газа и промышленной автоматики, подбирая решения под условия эксплуатации и требования объекта.</p>
+                <div class="feature-num">01</div>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fa-solid fa-gauge-high"></i></div>
+                <h3>Точность</h3>
+                <p>В каталоге представлены датчики, газоанализаторы, течеискатели и калибраторы с понятными характеристиками и назначением.</p>
+                <div class="feature-num">02</div>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fa-solid fa-headset"></i></div>
+                <h3>Поддержка</h3>
+                <p>Помогаем с подбором, консультацией, оформлением заказа и сопровождением поставки. При необходимости возможен выезд инженера.</p>
+                <div class="feature-num">03</div>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fa-solid fa-wifi"></i></div>
+                <h3>IoT интеграция</h3>
+                <p>Подключение к облачным системам мониторинга. Протоколы MQTT, Modbus, RS-485. Мобильное приложение для оперативного контроля.</p>
+                <div class="feature-num">04</div>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fa-solid fa-flask"></i></div>
+                <h3>Лаборатория</h3>
+                <p>Для оборудования предоставляются паспорта, руководства по эксплуатации и необходимые документы по заявке.</p>
+                <div class="feature-num">05</div>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fa-solid fa-truck-fast"></i></div>
+                <h3>Доставка</h3>
+                <p>Оформляем поставку из Оренбурга, согласуем способ доставки и подготавливаем оборудование к безопасной транспортировке.</p>
+                <div class="feature-num">06</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Industries -->
+<section class="industries">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-tag">Применение</div>
+            <h2>Отрасли и применение</h2>
+            <p>Наше оборудование работает в самых сложных и ответственных условиях</p>
+        </div>
+        <div class="industry-grid">
+            <div class="industry-card reveal">
+                <div class="industry-icon">🛢️</div>
+                <div class="industry-name">Нефтегазовая</div>
+                <div class="industry-desc">Мониторинг скважин, магистральных трубопроводов и перекачивающих станций</div>
+            </div>
+            <div class="industry-card reveal">
+                <div class="industry-icon">⚗️</div>
+                <div class="industry-name">Химическая</div>
+                <div class="industry-desc">Контроль токсичных и взрывоопасных газов в химических производствах</div>
+            </div>
+            <div class="industry-card reveal">
+                <div class="industry-icon">⚡</div>
+                <div class="industry-name">Энергетика</div>
+                <div class="industry-desc">Газовые турбины, котельные, ТЭЦ — непрерывный мониторинг выбросов</div>
+            </div>
+            <div class="industry-card reveal">
+                <div class="industry-icon">⛏️</div>
+                <div class="industry-name">Горнодобывающая</div>
+                <div class="industry-desc">Датчики метана для шахт, рудников и горных выработок</div>
+            </div>
+            <div class="industry-card reveal">
+                <div class="industry-icon">🏗️</div>
+                <div class="industry-name">Строительство</div>
+                <div class="industry-desc">Обнаружение утечек газа при монтаже и обслуживании инженерных систем</div>
+            </div>
+            <div class="industry-card reveal">
+                <div class="industry-icon">🌿</div>
+                <div class="industry-name">Экология</div>
+                <div class="industry-desc">Анализаторы для экологического мониторинга и контроля выбросов в атмосферу</div>
+            </div>
+            <div class="industry-card reveal">
+                <div class="industry-icon">🚢</div>
+                <div class="industry-name">Морская</div>
+                <div class="industry-desc">Оборудование для судов, морских платформ и терминалов СПГ</div>
+            </div>
+            <div class="industry-card reveal">
+                <div class="industry-icon">🏭</div>
+                <div class="industry-name">Металлургия</div>
+                <div class="industry-desc">Контроль доменных, конверторных и мартеновских газов в металлургическом производстве</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products -->
+<section class="features features--alt">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-tag">Каталог</div>
+            <h2>Популярные решения</h2>
+            <p>Наиболее востребованные приборы для промышленного мониторинга</p>
+        </div>
+        <div class="catalog-grid featured-wrap" id="featuredGrid"></div>
+        <div class="text-center">
+            <a href="catalog.html" class="btn btn-primary"><i class="fa-solid fa-arrow-right"></i> Весь каталог</a>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="how">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-tag">Процесс</div>
+            <h2>Как мы работаем</h2>
+            <p>От заявки до ввода оборудования в эксплуатацию — 4 шага</p>
+        </div>
+        <div class="steps-grid">
+            <div class="step reveal">
+                <div class="step-num">1</div>
+                <div class="step-title">Заявка</div>
+                <div class="step-desc">Оставьте заявку на сайте или позвоните нам. Ответим в течение 2 часов.</div>
+            </div>
+            <div class="step reveal">
+                <div class="step-num">2</div>
+                <div class="step-title">Подбор</div>
+                <div class="step-desc">Инженер подберёт оптимальное оборудование под ваши задачи и условия эксплуатации.</div>
+            </div>
+            <div class="step reveal">
+                <div class="step-num">3</div>
+                <div class="step-title">Поставка</div>
+                <div class="step-desc">Согласование поставки, упаковка и доставка по выбранному способу.</div>
+            </div>
+            <div class="step reveal">
+                <div class="step-num">4</div>
+                <div class="step-title">Сервис</div>
+                <div class="step-desc">Ввод в эксплуатацию, обучение персонала и последующее техническое обслуживание.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="testimonials">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-tag">Отзывы</div>
+            <h2>Что говорят клиенты</h2>
+            <p>Примеры обратной связи по подбору и поставке оборудования</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card reveal">
+                <div class="testimonial-stars">★★★★★</div>
+                <div class="testimonial-text">«Оборудование Газпроект Сервис Автоматика работает на нашем предприятии уже 8 лет без единого сбоя. Когда понадобилась проверка, инженеры приехали в тот же день.»</div>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">
+                        <img class="otziv" src="img/1.png" alt="Сергей Николаев">
+                    </div>
+                    <div>
+                        <div class="testimonial-name">Сергей Николаев</div>
+                        <div class="testimonial-company">Главный инженер, Промышленное предприятие</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card reveal">
+                <div class="testimonial-stars">★★★★★</div>
+                <div class="testimonial-text">«Датчики CH₄ прошли сложнейшие условия нашей шахты. Погрешность остаётся в заявленных пределах даже при резких перепадах температур.»</div>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">
+                        <img class="otziv" src="img/2.jpg" alt="Андрей Петров">
+                    </div>
+                    <div>
+                        <div class="testimonial-name">Андрей Петров</div>
+                        <div class="testimonial-company">Технический директор, Производственный участок</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card reveal">
+                <div class="testimonial-stars">★★★★★</div>
+                <div class="testimonial-text">«Внедрили IoT-систему мониторинга на 14 объектах. Теперь всё в одном приложении. Поддержка отвечает мгновенно, проблем ни разу не было.»</div>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">
+                        <img class="otziv" src="img/3.jpeg" alt="Ирина Соколова">
+                    </div>
+                    <div>
+                        <div class="testimonial-name">Ирина Соколова</div>
+                        <div class="testimonial-company">ОГЭ, Служба эксплуатации</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-banner">
+    <div class="container">
+        <h2>Готовы к сотрудничеству?</h2>
+        <p>Оставьте заявку — наш инженер свяжется с вами в течение 2 часов и поможет подобрать оптимальное решение</p>
+        <div class="inline-btn-row">
+            <a href="contact.html" class="btn btn-white"><i class="fa-solid fa-paper-plane"></i> Отправить заявку</a>
+            <a href="catalog.html" class="btn btn-outline-white"><i class="fa-solid fa-list"></i> Смотреть каталог</a>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-info">
+                <a href="index.html" class="logo">Газпроект<span>Сервис Автоматика</span></a>
+                <p>ООО «Газпроектсервисавтоматика» — поставка датчиков газа, газоанализаторов и оборудования промышленной автоматики с 2015 года.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Разделы</h4>
+                <a href="index.html">Главная</a>
+                <a href="catalog.html">Каталог</a>
+                <a href="about.html">О компании</a>
+                <a href="contact.html">Контакты</a>
+            </div>
+            <div class="footer-col">
+                <h4>Продукция</h4>
+                <a href="catalog.html">Датчики газа</a>
+                <a href="catalog.html">Газоанализаторы</a>
+                <a href="catalog.html">Течеискатели</a>
+                <a href="catalog.html">Калибраторы</a>
+            </div>
+            <div class="footer-col">
+                <h4>Новости и акции</h4>
+                <p class="muted-p">Подпишитесь и получайте спецпредложения первыми</p>
+                <form class="sub-form" onsubmit="return false">
+                    <input type="email" placeholder="Ваш Email">
+                    <button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 ООО «Газпроектсервисавтоматика». Все права защищены.</p>
+            <div class="footer-socials">
+                <a href="#"><i class="fa-brands fa-telegram"></i></a>
+                <a href="#"><i class="fa-brands fa-vk"></i></a>
+                <a href="#"><i class="fa-solid fa-envelope"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<div class="modal-overlay" id="authModal">
+    <div class="modal-content">
+        <div class="modal-header"><h3>Личный кабинет</h3><p>Вход и регистрация</p></div>
+        <button type="button" class="close-modal" id="closeAuth">&times;</button>
+        <div class="modal-tabs">
+            <button type="button" class="tab-btn active" data-tab="login">Вход</button>
+            <button type="button" class="tab-btn" data-tab="reg">Регистрация</button>
+        </div>
+        <form id="loginForm" class="auth-form active" onsubmit="return false">
+            <input type="email" placeholder="Email">
+            <input type="password" placeholder="Пароль">
+            <button type="submit" class="btn btn-primary btn-block">Войти</button>
+        </form>
+        <form id="regForm" class="auth-form" onsubmit="return false">
+            <input type="text" placeholder="Название компании">
+            <input type="email" placeholder="Email">
+            <input type="password" placeholder="Пароль">
+            <button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button>
+        </form>
+    </div>
+</div>
+
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-drawer" id="cartDrawer">
+    <div class="cart-header"><h3>Корзина</h3><button class="cart-close" id="closeCart">&times;</button></div>
+    <div class="cart-items" id="cartItems"><div class="cart-empty"><i class="fa-solid fa-cart-shopping"></i><p>Корзина пуста</p></div></div>
+    <div class="cart-footer">
+        <div class="cart-total"><span>Итого</span><strong id="cartTotal">0 ₽</strong></div>
+        <button class="checkout-btn">Оформить заказ</button>
+    </div>
+</div>
+
+<div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastMsg">Добавлено в корзину</span></div>
+
+<script src="script.js"></script>
+</body>
+</html>

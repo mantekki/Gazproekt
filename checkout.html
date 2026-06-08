@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оформление заказа | Газпроект Сервис Автоматика</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="header">
+    <div class="container nav-wrapper">
+        <a href="index.html" class="logo">Газпроект<span>Сервис Автоматика</span></a>
+        <nav class="nav">
+            <ul class="nav-list">
+                <li><a href="catalog.html">Каталог</a></li>
+                <li><a href="about.html">О компании</a></li>
+                <li><a href="support.html">Сервис</a></li>
+                <li><a href="delivery.html">Доставка</a></li>
+                <li><a href="docs.html">Документы</a></li>
+                <li><a href="contact.html">Контакты</a></li>
+            </ul>
+        </nav>
+        <div class="header-actions">
+            <button class="auth-btn" id="openAuth"><i class="fa-solid fa-user"></i> Войти</button>
+            <div class="cart-icon" id="openCart"><i class="fa-solid fa-cart-shopping"></i><span id="cart-count">0</span></div>
+            <div class="burger" id="burger"><span></span></div>
+        </div>
+    </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+    <a href="catalog.html">Каталог</a>
+    <a href="about.html">О компании</a>
+    <a href="support.html">Сервис</a>
+    <a href="delivery.html">Доставка</a>
+    <a href="docs.html">Документы</a>
+    <a href="contact.html">Контакты</a>
+</div>
+
+<div class="page-hero">
+    <div class="container">
+        <div class="section-tag animate-up">Заказ</div>
+        <h1 class="animate-up-delay">Оформление заказа</h1>
+        <p class="animate-up-delay-2">Проверьте состав корзины и укажите данные для доставки</p>
+    </div>
+</div>
+
+<section class="checkout-page">
+    <div class="container">
+        <nav class="checkout-steps" aria-label="Шаги оформления">
+            <span class="checkout-step done"><i class="fa-solid fa-cart-shopping"></i> Корзина</span>
+            <span class="checkout-step-sep"><i class="fa-solid fa-chevron-right"></i></span>
+            <span class="checkout-step active"><i class="fa-solid fa-clipboard-list"></i> Оформление</span>
+            <span class="checkout-step-sep"><i class="fa-solid fa-chevron-right"></i></span>
+            <span class="checkout-step" id="stepDone"><i class="fa-solid fa-circle-check"></i> Готово</span>
+        </nav>
+
+        <div id="checkoutNotAuthed" class="checkout-state" style="display:none;">
+            <div class="checkout-state-card">
+                <i class="fa-solid fa-lock"></i>
+                <h2>Требуется вход</h2>
+                <p>Войдите в аккаунт, чтобы оформить заказ. Товары из корзины сохранятся.</p>
+                <button type="button" class="btn btn-primary" id="checkoutLoginBtn"><i class="fa-solid fa-right-to-bracket"></i> Войти</button>
+            </div>
+        </div>
+
+        <div id="checkoutEmpty" class="checkout-state" style="display:none;">
+            <div class="checkout-state-card">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <h2>Корзина пуста</h2>
+                <p>Добавьте оборудование из каталога, чтобы оформить заказ.</p>
+                <a href="catalog.html" class="btn btn-primary"><i class="fa-solid fa-microchip"></i> Перейти в каталог</a>
+            </div>
+        </div>
+
+        <div id="checkoutSuccess" class="checkout-state" style="display:none;">
+            <div class="checkout-state-card checkout-state-card--success">
+                <i class="fa-solid fa-circle-check"></i>
+                <h2>Заказ принят!</h2>
+                <p>Номер заказа: <strong id="successOrderId">—</strong>. Менеджер свяжется с вами для подтверждения.</p>
+                <div class="checkout-success-actions">
+                    <a href="profile.html" class="btn btn-primary"><i class="fa-solid fa-box"></i> Мои заказы</a>
+                    <a href="catalog.html" class="btn btn-outline">Продолжить покупки</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="checkoutMain" class="checkout-layout" style="display:none;">
+            <div class="checkout-form-card">
+                <h2>Данные для доставки</h2>
+                <p class="checkout-form-sub">Заполните контактные данные — мы используем их для связи и отгрузки</p>
+                <form id="checkoutForm" novalidate>
+                    <div class="checkout-form-grid">
+                        <div class="form-field full">
+                            <label class="form-label" for="coCompany">Компания</label>
+                            <input class="form-input" type="text" id="coCompany" placeholder="ООО «Пример»">
+                        </div>
+                        <div class="form-field">
+                            <label class="form-label" for="coEmail">Email</label>
+                            <input class="form-input" type="email" id="coEmail" readonly>
+                        </div>
+                        <div class="form-field">
+                            <label class="form-label" for="coPhone">Телефон *</label>
+                            <input class="form-input" type="tel" id="coPhone" placeholder="+7 (___) ___-__-__" required>
+                        </div>
+                        <div class="form-field full">
+                            <label class="form-label" for="coAddress">Адрес доставки *</label>
+                            <input class="form-input" type="text" id="coAddress" placeholder="Улица, дом, офис" required>
+                        </div>
+                        <div class="form-field full">
+                            <label class="form-label" for="coDelivery">Способ доставки *</label>
+                            <select class="form-input" id="coDelivery" required>
+                                <option value="">Выберите способ</option>
+                                <option value="Курьер по Оренбургу">Курьер по Оренбургу</option>
+                                <option value="Транспортная компания">Транспортная компания</option>
+                                <option value="Самовывоз (Оренбург)">Самовывоз (Оренбург)</option>
+                            </select>
+                        </div>
+                        <div class="form-field full">
+                            <label class="form-label" for="coComment">Комментарий к заказу</label>
+                            <textarea class="form-input checkout-textarea" id="coComment" rows="3" placeholder="Пожелания по срокам, монтажу, документам…"></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block checkout-submit" id="submitOrderBtn">
+                        <i class="fa-solid fa-check"></i> Подтвердить заказ
+                    </button>
+                    <p class="checkout-note"><i class="fa-solid fa-shield-halved"></i> Нажимая кнопку, вы соглашаетесь с условиями поставки. Оплата — по счёту после подтверждения менеджером.</p>
+                </form>
+            </div>
+
+            <aside class="checkout-summary-card">
+                <h3>Ваш заказ</h3>
+                <div class="checkout-summary-items" id="checkoutSummaryItems"></div>
+                <div class="checkout-summary-row">
+                    <span>Позиций</span>
+                    <strong id="checkoutItemsCount">0</strong>
+                </div>
+                <div class="checkout-summary-row checkout-summary-total">
+                    <span>Итого</span>
+                    <strong id="checkoutSummaryTotal">0 ₽</strong>
+                </div>
+                <a href="catalog.html" class="checkout-back-link"><i class="fa-solid fa-arrow-left"></i> Вернуться в каталог</a>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-info"><a href="index.html" class="logo">Газпроект<span>Сервис Автоматика</span></a><p>ООО «Газпроект Сервис Автоматика» — газовый анализ и промышленная автоматика.</p></div>
+            <div class="footer-col"><h4>Разделы</h4><a href="catalog.html">Каталог</a><a href="about.html">О нас</a><a href="contact.html">Контакты</a></div>
+            <div class="footer-col"><h4>Продукция</h4><a href="catalog.html">Датчики газа</a><a href="catalog.html">Газоанализаторы</a><a href="catalog.html">Течеискатели</a></div>
+            <div class="footer-col"><h4>Подписка</h4><form class="sub-form" onsubmit="return false"><input type="email" placeholder="Email"><button type="submit"><i class="fa-solid fa-paper-plane"></i></button></form></div>
+        </div>
+        <div class="footer-bottom"><p>© 2025 ООО «Газпроектсервисавтоматика». Все права защищены.</p><div class="footer-socials"><a href="#"><i class="fa-brands fa-telegram"></i></a><a href="#"><i class="fa-brands fa-vk"></i></a><a href="#"><i class="fa-solid fa-envelope"></i></a></div></div>
+    </div>
+</footer>
+
+<div class="modal-overlay" id="authModal"><div class="modal-content"><div class="modal-header"><h3>Личный кабинет</h3><p>Вход и регистрация</p></div><button type="button" class="close-modal" id="closeAuth">&times;</button><div class="modal-tabs"><button type="button" class="tab-btn active" data-tab="login">Вход</button><button type="button" class="tab-btn" data-tab="reg">Регистрация</button></div><form id="loginForm" class="auth-form active" onsubmit="return false"><input type="email" placeholder="Email"><input type="password" placeholder="Пароль"><button type="submit" class="btn btn-primary btn-block">Войти</button></form><form id="regForm" class="auth-form" onsubmit="return false"><input type="text" placeholder="Компания"><input type="email" placeholder="Email"><input type="password" placeholder="Пароль"><button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button></form></div></div>
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-drawer" id="cartDrawer"><div class="cart-header"><h3>Корзина</h3><button class="cart-close" id="closeCart">&times;</button></div><div class="cart-items" id="cartItems"><div class="cart-empty"><i class="fa-solid fa-cart-shopping"></i><p>Корзина пуста</p></div></div><div class="cart-footer"><div class="cart-total"><span>Итого</span><strong id="cartTotal">0 ₽</strong></div><button class="checkout-btn">Оформить заказ</button></div></div>
+<div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastMsg">Готово!</span></div>
+
+<script src="script.js"></script>
+<script src="checkout.js"></script>
+</body>
+</html>

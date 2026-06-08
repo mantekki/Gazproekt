@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Документация и сертификаты | Газпроект Сервис Автоматика</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="header">
+    <div class="container nav-wrapper">
+        <a href="index.html" class="logo">Газпроект<span>Сервис Автоматика</span></a>
+        <nav class="nav">
+            <ul class="nav-list">
+                <li><a href="catalog.html">Каталог</a></li>
+                <li><a href="about.html">О компании</a></li>
+                <li><a href="support.html">Сервис</a></li>
+                <li><a href="delivery.html">Доставка</a></li>
+                <li><a href="docs.html" class="active">Документы</a></li>
+                <li><a href="contact.html">Контакты</a></li>
+            </ul>
+        </nav>
+        <div class="header-actions">
+            <button class="auth-btn" id="openAuth"><i class="fa-solid fa-user"></i> Войти</button>
+            <div class="cart-icon" id="openCart"><i class="fa-solid fa-cart-shopping"></i><span id="cart-count">0</span></div>
+            <div class="burger" id="burger"><span></span></div>
+        </div>
+    </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+    <a href="catalog.html">Каталог</a>
+    <a href="about.html">О компании</a>
+    <a href="support.html">Сервис</a>
+    <a href="delivery.html">Доставка</a>
+    <a href="docs.html">Документы</a>
+    <a href="contact.html">Контакты</a>
+</div>
+
+<div class="page-hero">
+    <div class="container">
+        <div class="section-tag animate-up">Документы</div>
+        <h1 class="animate-up-delay">Документация и сертификаты</h1>
+        <p class="animate-up-delay-2">Паспорта изделий, руководство по эксплуатации, сертификаты соответствия и подтверждение характеристик</p>
+    </div>
+</div>
+
+<section class="text-page">
+    <div class="container">
+        <div class="text-layout">
+            <aside class="text-nav reveal">
+                <div class="text-nav-title">Содержание</div>
+                <a href="#certs">Сертификаты</a>
+                <a href="#passport">Паспорта и РЭ</a>
+                <a href="#ex">Ex / ATEX</a>
+                <a href="#cal">Проверка/калибровка</a>
+                <a href="#warranty">Гарантия</a>
+                <a href="#faq">FAQ</a>
+            </aside>
+
+            <main class="text-content">
+                <div class="text-card reveal" id="certs">
+                    <div class="text-card-tag"><i class="fa-solid fa-certificate"></i> Сертификаты</div>
+                    <h2>Сертификаты и декларации</h2>
+                    <p>Для промышленного оборудования важно не только заявить параметры, но и подтвердить их документально. Газпроектсервисавтоматика формирует комплект документов в зависимости от типа оборудования, требований заказчика и условий эксплуатации.</p>
+                    <p>Наиболее типовые документы:</p>
+                    <ul class="text-list">
+                        <li><strong>Документы качества</strong> — паспорта, инструкции, сертификаты и декларации при наличии у конкретной модели.</li>
+                        <li><strong>Паспорта и руководства</strong> — документы производителя на поставляемое оборудование.</li>
+                        <li><strong>Декларации/сертификаты соответствия</strong> (в зависимости от модели и назначения).</li>
+                        <li><strong>Исполнения Ex</strong> — подтверждение взрывозащиты для соответствующих модификаций.</li>
+                    </ul>
+                    <div class="callout">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <div>
+                            <div class="callout-title">Важно</div>
+                            <div class="callout-text">Конкретный перечень документов зависит от модели и проекта. Для тендеров и крупных поставок подготовим реестр документов и спецификацию.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-card reveal" id="passport">
+                    <div class="text-card-tag"><i class="fa-solid fa-file-lines"></i> Паспорта</div>
+                    <h2>Паспорт изделия и руководство по эксплуатации</h2>
+                    <p>Каждый прибор сопровождается паспортом и (при необходимости) руководством по эксплуатации. Документы включают основные технические характеристики, схемы подключения, условия монтажа, требования к обслуживанию и рекомендации по диагностике.</p>
+                    <div class="table-card">
+                        <div class="table-row"><div class="k">Паспорт</div><div class="v">серийный номер, параметры, комплектность</div></div>
+                        <div class="table-row"><div class="k">РЭ</div><div class="v">монтаж, настройка, эксплуатация, ТО</div></div>
+                        <div class="table-row"><div class="k">Схемы</div><div class="v">клеммы, интерфейсы, протоколы связи</div></div>
+                        <div class="table-row"><div class="k">Приложения</div><div class="v">формуляры, журнал ТО (по запросу)</div></div>
+                    </div>
+                </div>
+
+                <div class="text-card reveal" id="ex">
+                    <div class="text-card-tag"><i class="fa-solid fa-fire"></i> Ex / ATEX</div>
+                    <h2>Исполнения для взрывоопасных зон</h2>
+                    <p>Для объектов нефтегаза и химической промышленности критичны требования по взрывозащите. Для Ex‑модификаций мы предоставляем подтверждающие документы и рекомендации по монтажу, включая требования к кабельным вводам, заземлению и классу защиты корпуса.</p>
+                    <p class="muted">Если вы не уверены в зоне/категории — отправьте требования объекта, инженер поможет выбрать правильное исполнение.</p>
+                </div>
+
+                <div class="text-card reveal" id="cal">
+                    <div class="text-card-tag"><i class="fa-solid fa-flask"></i> Проверка</div>
+                    <h2>Проверка и калибровка</h2>
+                    <p>Калибровка подтверждает корректность показаний и пригодность прибора к эксплуатации. По запросу выполняем калибровку/проверку перед отгрузкой или в рамках сервисного обслуживания. В документах отражаются условия измерений, используемые эталоны и результат проверки.</p>
+                    <ul class="text-list">
+                        <li><strong>Перед отгрузкой</strong> — для ответственных объектов и сдачи в эксплуатацию.</li>
+                        <li><strong>Планово</strong> — по регламенту предприятия (обычно 1 раз в год).</li>
+                        <li><strong>После ремонта</strong> — для подтверждения восстановления характеристик.</li>
+                    </ul>
+                </div>
+
+                <div class="text-card reveal" id="warranty">
+                    <div class="text-card-tag"><i class="fa-solid fa-shield-halved"></i> Гарантия</div>
+                    <h2>Гарантийные обязательства</h2>
+                    <p>Гарантия распространяется на заводские дефекты и соблюдается при корректном монтаже и эксплуатации. Мы рекомендуем выполнять регламентные проверки и использовать оригинальные комплектующие (включая расходные материалы и ЗИП).</p>
+                    <div class="callout">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                        <div>
+                            <div class="callout-title">Сервис</div>
+                            <div class="callout-text">Если требуется обслуживание, калибровка или диагностика — перейдите на страницу «Сервис» и оставьте заявку.</div>
+                        </div>
+                    </div>
+                    <div class="text-page-cta--tight">
+                        <a href="support.html" class="btn btn-primary"><i class="fa-solid fa-headset"></i> Перейти в сервис</a>
+                    </div>
+                </div>
+
+                <div class="text-card reveal" id="faq">
+                    <div class="text-card-tag"><i class="fa-solid fa-circle-question"></i> FAQ</div>
+                    <h2>Частые вопросы</h2>
+                    <div class="faq-grid">
+                        <details class="faq-item">
+                            <summary><span>Можно ли получить документы заранее для тендера?</span><i class="fa-solid fa-chevron-down"></i></summary>
+                            <div class="faq-body">Да. Подготовим реестр документов и предоставим копии/шаблоны по запросу (в рамках политики компании).</div>
+                        </details>
+                        <details class="faq-item">
+                            <summary><span>Где найти руководство по подключению?</span><i class="fa-solid fa-chevron-down"></i></summary>
+                            <div class="faq-body">В комплекте поставки (паспорт/РЭ). Также можем отправить электронную версию по email.</div>
+                        </details>
+                        <details class="faq-item">
+                            <summary><span>Вы делаете калибровку перед отгрузкой?</span><i class="fa-solid fa-chevron-down"></i></summary>
+                            <div class="faq-body">Да, по запросу. Срок калибровки — от 3 рабочих дней, зависит от загрузки лаборатории.</div>
+                        </details>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-info"><a href="index.html" class="logo">Газпроект<span>Сервис Автоматика</span></a><p>ООО «Газпроектсервисавтоматика» — поставка газоаналитического оборудования.</p></div>
+            <div class="footer-col">
+                <h4>Разделы</h4>
+                <a href="catalog.html">Каталог</a>
+                <a href="about.html">О нас</a>
+                <a href="support.html">Сервис</a>
+                <a href="delivery.html">Доставка</a>
+                <a href="docs.html">Документы</a>
+                <a href="contact.html">Контакты</a>
+            </div>
+            <div class="footer-col"><h4>Продукция</h4><a href="#">Датчики газа</a><a href="#">Газоанализаторы</a><a href="#">Течеискатели</a></div>
+            <div class="footer-col"><h4>Подписка</h4><form class="sub-form" onsubmit="return false"><input type="email" placeholder="Email"><button type="submit"><i class="fa-solid fa-paper-plane"></i></button></form></div>
+        </div>
+        <div class="footer-bottom"><p>© 2025 ООО «Газпроектсервисавтоматика». Все права защищены.</p><div class="footer-socials"><a href="#"><i class="fa-brands fa-telegram"></i></a><a href="#"><i class="fa-brands fa-vk"></i></a><a href="#"><i class="fa-solid fa-envelope"></i></a></div></div>
+    </div>
+</footer>
+
+<div class="modal-overlay" id="authModal"><div class="modal-content"><div class="modal-header"><h3>Личный кабинет</h3><p>Вход и регистрация</p></div><button type="button" class="close-modal" id="closeAuth">&times;</button><div class="modal-tabs"><button type="button" class="tab-btn active" data-tab="login">Вход</button><button type="button" class="tab-btn" data-tab="reg">Регистрация</button></div><form id="loginForm" class="auth-form active" onsubmit="return false"><input type="email" placeholder="Email"><input type="password" placeholder="Пароль"><button type="submit" class="btn btn-primary btn-block">Войти</button></form><form id="regForm" class="auth-form" onsubmit="return false"><input type="text" placeholder="Компания"><input type="email" placeholder="Email"><input type="password" placeholder="Пароль"><button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button></form></div></div>
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-drawer" id="cartDrawer"><div class="cart-header"><h3>Корзина</h3><button class="cart-close" id="closeCart">&times;</button></div><div class="cart-items" id="cartItems"><div class="cart-empty"><i class="fa-solid fa-cart-shopping"></i><p>Корзина пуста</p></div></div><div class="cart-footer"><div class="cart-total"><span>Итого</span><strong id="cartTotal">0 ₽</strong></div><button class="checkout-btn">Оформить заказ</button></div></div>
+<div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastMsg">Готово!</span></div>
+
+<script src="script.js"></script>
+</body>
+</html>

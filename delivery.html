@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Доставка и оплата | Газпроект Сервис Автоматика</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="header">
+    <div class="container nav-wrapper">
+        <a href="index.html" class="logo">Газпроект<span>Сервис Автоматика</span></a>
+        <nav class="nav">
+            <ul class="nav-list">
+                <li><a href="catalog.html">Каталог</a></li>
+                <li><a href="about.html">О компании</a></li>
+                <li><a href="support.html">Сервис</a></li>
+                <li><a href="delivery.html" class="active">Доставка</a></li>
+                <li><a href="docs.html">Документы</a></li>
+                <li><a href="contact.html">Контакты</a></li>
+            </ul>
+        </nav>
+        <div class="header-actions">
+            <button class="auth-btn" id="openAuth"><i class="fa-solid fa-user"></i> Войти</button>
+            <div class="cart-icon" id="openCart"><i class="fa-solid fa-cart-shopping"></i><span id="cart-count">0</span></div>
+            <div class="burger" id="burger"><span></span></div>
+        </div>
+    </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+    <a href="catalog.html">Каталог</a>
+    <a href="about.html">О компании</a>
+    <a href="support.html">Сервис</a>
+    <a href="delivery.html">Доставка</a>
+    <a href="docs.html">Документы</a>
+    <a href="contact.html">Контакты</a>
+</div>
+
+<div class="page-hero">
+    <div class="container">
+        <div class="section-tag animate-up">Информация</div>
+        <h1 class="animate-up-delay">Доставка и оплата</h1>
+        <p class="animate-up-delay-2">Условия отгрузки, сроки, варианты оплаты и пакет документов — всё в одном разделе</p>
+    </div>
+</div>
+
+<section class="text-page">
+    <div class="container">
+        <div class="text-layout">
+            <aside class="text-nav reveal">
+                <div class="text-nav-title">Содержание</div>
+                <a href="#delivery">Доставка</a>
+                <a href="#pickup">Самовывоз</a>
+                <a href="#payment">Оплата</a>
+                <a href="#docs">Документы</a>
+                <a href="#terms">Сроки изготовления</a>
+                <a href="#faq">FAQ</a>
+            </aside>
+
+            <main class="text-content">
+                <div class="text-card reveal" id="delivery">
+                    <div class="text-card-tag"><i class="fa-solid fa-truck-fast"></i> Доставка</div>
+                    <h2>Доставка по России и СНГ</h2>
+                    <p>Мы организуем доставку газоаналитического оборудования и приборов промышленного контроля по согласованию с заказчиком. Компания базируется в Оренбурге, поэтому условия и сроки поставки уточняются индивидуально при оформлении заказа.</p>
+                    <p>Варианты доставки:</p>
+                    <ul class="text-list">
+                        <li><strong>Транспортные компании</strong> (ПЭК, Деловые линии и др.) — оптимально для большинства регионов.</li>
+                        <li><strong>Курьерская доставка</strong> — для малогабаритных приборов и срочных поставок.</li>
+                        <li><strong>Экспресс‑отгрузка</strong> — по согласованию для критичных объектов и аварийных замен.</li>
+                    </ul>
+                    <div class="callout">
+                        <i class="fa-solid fa-box"></i>
+                        <div>
+                            <div class="callout-title">Упаковка</div>
+                            <div class="callout-text">Жёсткая коробка, амортизирующие материалы, маркировка “Хрупкое”. Для взрывозащищённых изделий — отдельный контроль упаковки и пломбирование.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-card reveal" id="pickup">
+                    <div class="text-card-tag"><i class="fa-solid fa-warehouse"></i> Самовывоз</div>
+                    <h2>Самовывоз и получение заказа</h2>
+                    <p>Самовывоз доступен по предварительному согласованию даты и времени. Перед выдачей мы подготовим комплект документов и обеспечим выдачу через ответственное лицо склада.</p>
+                    <ul class="text-list">
+                        <li><strong>Город</strong>: Оренбург</li>
+                        <li><strong>Время</strong>: Пн–Пт, 9:00–18:00</li>
+                        <li><strong>Нужно иметь</strong>: доверенность/печать (для юрлиц), документ удостоверяющий личность</li>
+                    </ul>
+                </div>
+
+                <div class="text-card reveal" id="payment">
+                    <div class="text-card-tag"><i class="fa-solid fa-credit-card"></i> Оплата</div>
+                    <h2>Оплата для организаций</h2>
+                    <p>Мы работаем преимущественно с юридическими лицами. Оплата производится по счёту. В зависимости от проекта возможны авансирование, оплата по этапам и постоплата для постоянных партнёров.</p>
+                    <ul class="text-list">
+                        <li><strong>Безналичный расчёт</strong> по счёту (основной вариант).</li>
+                        <li><strong>Поэтапная оплата</strong> для проектных поставок (согласуется в договоре).</li>
+                        <li><strong>Оплата по договору сервиса</strong> (SLA/обслуживание) — ежемесячно или ежеквартально.</li>
+                    </ul>
+                    <p class="muted">Если вам нужен КП, спецификация или договор под тендер — отправьте запрос через «Контакты», мы подготовим пакет.</p>
+                </div>
+
+                <div class="text-card reveal" id="docs">
+                    <div class="text-card-tag"><i class="fa-solid fa-file-lines"></i> Документы</div>
+                    <h2>Пакет документов</h2>
+                    <p>К каждой поставке формируется комплект документов. Состав зависит от типа изделия, модели и требований объекта.</p>
+                    <ul class="text-list">
+                        <li><strong>Счёт / договор / спецификация</strong> (по запросу).</li>
+                        <li><strong>Товарная накладная</strong>, <strong>счёт‑фактура</strong> (если применимо).</li>
+                        <li><strong>Паспорт изделия</strong>, руководство по эксплуатации.</li>
+                        <li><strong>Сертификаты</strong> и декларации соответствия (при необходимости — копии в комплекте).</li>
+                        <li><strong>Протокол калибровки/проверки</strong> (если включено в заказ).</li>
+                    </ul>
+                </div>
+
+                <div class="text-card reveal" id="terms">
+                    <div class="text-card-tag"><i class="fa-solid fa-hourglass-half"></i> Сроки</div>
+                    <h2>Сроки изготовления и отгрузки</h2>
+                    <p>Часть приборов поддерживается на складе в базовых конфигурациях. Для нестандартных исполнений и проектных поставок сроки зависят от комплектации, класса защиты, требований Ex и объёма партии.</p>
+                    <div class="table-card">
+                        <div class="table-row"><div class="k">Позиции со склада</div><div class="v">1–2 рабочих дня</div></div>
+                        <div class="table-row"><div class="k">Сборка под заказ</div><div class="v">5–10 рабочих дней</div></div>
+                        <div class="table-row"><div class="k">Проектные партии</div><div class="v">по графику поставки</div></div>
+                        <div class="table-row"><div class="k">Проверка/калибровка</div><div class="v">от 3 рабочих дней</div></div>
+                    </div>
+                </div>
+
+                <div class="text-card reveal" id="faq">
+                    <div class="text-card-tag"><i class="fa-solid fa-circle-question"></i> FAQ</div>
+                    <h2>Частые вопросы</h2>
+                    <div class="faq-grid">
+                        <details class="faq-item">
+                            <summary><span>Можно ли отправить “день в день”?</span><i class="fa-solid fa-chevron-down"></i></summary>
+                            <div class="faq-body">Да, если позиция есть на складе и заявка оформлена до 14:00 (МСК). Для срочных случаев доступна экспресс‑логистика.</div>
+                        </details>
+                        <details class="faq-item">
+                            <summary><span>Как рассчитывается стоимость доставки?</span><i class="fa-solid fa-chevron-down"></i></summary>
+                            <div class="faq-body">По тарифам перевозчика и габаритам/весу. Мы заранее согласуем ТК и ориентировочную стоимость.</div>
+                        </details>
+                        <details class="faq-item">
+                            <summary><span>Можно ли включить калибровку в поставку?</span><i class="fa-solid fa-chevron-down"></i></summary>
+                            <div class="faq-body">Да, добавим к заказу калибровку/проверку и приложим соответствующие документы.</div>
+                        </details>
+                    </div>
+                </div>
+
+                <div class="reveal text-page-cta inline-btn-row">
+                    <a href="contact.html" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Запросить КП и сроки</a>
+                    <a href="catalog.html" class="btn btn-outline"><i class="fa-solid fa-list"></i> Перейти в каталог</a>
+                </div>
+            </main>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-info"><a href="index.html" class="logo">Газпроект<span>Сервис Автоматика</span></a><p>ООО «Газпроектсервисавтоматика» — поставка газоаналитического оборудования.</p></div>
+            <div class="footer-col">
+                <h4>Разделы</h4>
+                <a href="catalog.html">Каталог</a>
+                <a href="about.html">О нас</a>
+                <a href="support.html">Сервис</a>
+                <a href="delivery.html">Доставка</a>
+                <a href="docs.html">Документы</a>
+                <a href="contact.html">Контакты</a>
+            </div>
+            <div class="footer-col"><h4>Продукция</h4><a href="#">Датчики газа</a><a href="#">Газоанализаторы</a><a href="#">Течеискатели</a></div>
+            <div class="footer-col"><h4>Подписка</h4><form class="sub-form" onsubmit="return false"><input type="email" placeholder="Email"><button type="submit"><i class="fa-solid fa-paper-plane"></i></button></form></div>
+        </div>
+        <div class="footer-bottom"><p>© 2025 ООО «Газпроектсервисавтоматика». Все права защищены.</p><div class="footer-socials"><a href="#"><i class="fa-brands fa-telegram"></i></a><a href="#"><i class="fa-brands fa-vk"></i></a><a href="#"><i class="fa-solid fa-envelope"></i></a></div></div>
+    </div>
+</footer>
+
+<div class="modal-overlay" id="authModal"><div class="modal-content"><div class="modal-header"><h3>Личный кабинет</h3><p>Вход и регистрация</p></div><button type="button" class="close-modal" id="closeAuth">&times;</button><div class="modal-tabs"><button type="button" class="tab-btn active" data-tab="login">Вход</button><button type="button" class="tab-btn" data-tab="reg">Регистрация</button></div><form id="loginForm" class="auth-form active" onsubmit="return false"><input type="email" placeholder="Email"><input type="password" placeholder="Пароль"><button type="submit" class="btn btn-primary btn-block">Войти</button></form><form id="regForm" class="auth-form" onsubmit="return false"><input type="text" placeholder="Компания"><input type="email" placeholder="Email"><input type="password" placeholder="Пароль"><button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button></form></div></div>
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-drawer" id="cartDrawer"><div class="cart-header"><h3>Корзина</h3><button class="cart-close" id="closeCart">&times;</button></div><div class="cart-items" id="cartItems"><div class="cart-empty"><i class="fa-solid fa-cart-shopping"></i><p>Корзина пуста</p></div></div><div class="cart-footer"><div class="cart-total"><span>Итого</span><strong id="cartTotal">0 ₽</strong></div><button class="checkout-btn">Оформить заказ</button></div></div>
+<div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastMsg">Готово!</span></div>
+
+<script src="script.js"></script>
+</body>
+</html>

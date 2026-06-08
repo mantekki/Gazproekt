@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет | Газпроект Сервис Автоматика</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .profile-page { padding: 40px 0 80px; min-height: calc(100vh - 64px); background: var(--bg-gray); }
+        .profile-layout { display: grid; grid-template-columns: 280px 1fr; gap: 28px; align-items: start; }
+        .profile-sidebar { position: sticky; top: 84px; }
+        .profile-card { background: white; border-radius: var(--radius-lg); border: 1px solid var(--border); overflow: hidden; box-shadow: var(--shadow-sm); }
+        .profile-avatar-wrap { background: linear-gradient(135deg, #1a56db 0%, #6366f1 100%); padding: 32px 24px; text-align: center; }
+        .profile-avatar { width: 72px; height: 72px; background: rgba(255,255,255,0.2); border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; color: white; border: 3px solid rgba(255,255,255,0.4); }
+        .profile-avatar-name { color: white; font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+        .profile-avatar-email { color: rgba(255,255,255,0.75); font-size: 12px; }
+        .profile-type-badge { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; padding: 5px 10px; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.22); border-radius: 100px; color: white; font-size: 11px; font-weight: 700; }
+        .profile-nav { padding: 12px 0; }
+        .profile-nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 20px; font-size: 14px; font-weight: 500; color: var(--text-mid); cursor: pointer; transition: all 0.15s; border-left: 3px solid transparent; }
+        .profile-nav-item:hover { background: var(--bg-gray); color: var(--text); }
+        .profile-nav-item.active { background: var(--blue-light); color: var(--blue); border-left-color: var(--blue); }
+        .profile-nav-item i { width: 16px; text-align: center; }
+        .profile-nav-divider { height: 1px; background: var(--border); margin: 8px 16px; }
+        .profile-content { display: none; }
+        .profile-content.active { display: block; }
+        .profile-section-title { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+        .profile-section-sub { font-size: 14px; color: var(--text-dim); margin-bottom: 24px; }
+        /* Edit form */
+        .edit-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-field { display: flex; flex-direction: column; gap: 6px; }
+        .form-field.full { grid-column: 1/-1; }
+        .form-label { font-size: 12px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.6px; }
+        .form-input { padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; background: white; color: var(--text); transition: border-color 0.15s; font-family: inherit; }
+        .form-input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(26,86,219,0.1); }
+        .form-actions { display: flex; gap: 12px; margin-top: 8px; }
+        /* Orders */
+        .orders-empty { text-align: center; padding: 60px 20px; color: var(--text-dim); }
+        .orders-empty i { font-size: 40px; margin-bottom: 16px; opacity: 0.3; }
+        .orders-empty p { font-size: 15px; margin-bottom: 20px; }
+        .order-card { background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 16px; overflow: hidden; box-shadow: var(--shadow-sm); transition: box-shadow 0.15s; }
+        .order-card:hover { box-shadow: var(--shadow); }
+        .order-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); cursor: pointer; user-select: none; }
+        .order-header-left { display: flex; align-items: center; gap: 16px; }
+        .order-num { font-weight: 700; font-size: 15px; color: var(--text); }
+        .order-date { font-size: 12px; color: var(--text-dim); }
+        .order-status { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .order-status.new        { background:#e8f0fe; color:#1a56db; }
+        .order-status.confirmed  { background:#ede9fe; color:#7c3aed; }
+        .order-status.processing { background:#fef3c7; color:#d97706; }
+        .order-status.shipped    { background:#e0f2fe; color:#0891b2; }
+        .order-status.delivered  { background:#d1fae5; color:#059669; }
+        .order-status.cancelled  { background:#fee2e2; color:#dc2626; }
+        .order-total { font-weight: 700; font-size: 15px; color: var(--text); white-space: nowrap; }
+        .order-body { padding: 16px 20px; display: none; }
+        .order-body.open { display: block; }
+        .order-item-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--bg-gray2); }
+        .order-item-row:last-child { border-bottom: none; }
+        .order-item-emoji { font-size: 22px; width: 36px; text-align: center; }
+        .order-item-name { flex: 1; font-size: 14px; font-weight: 500; color: var(--text); }
+        .order-item-qty { font-size: 13px; color: var(--text-dim); }
+        .order-item-price { font-weight: 600; font-size: 14px; color: var(--text); white-space: nowrap; }
+        .order-chevron { color: var(--text-dim); transition: transform 0.2s; }
+        .order-header.open .order-chevron { transform: rotate(180deg); }
+        /* Stats */
+        .stat-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+        .stat-card { background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; display: flex; align-items: flex-start; gap: 14px; box-shadow: var(--shadow-sm); }
+        .stat-card-icon { width: 44px; height: 44px; border-radius: 10px; background: var(--blue-light); color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+        .stat-card .big { font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 2px; font-family: 'Manrope', sans-serif; line-height: 1.1; }
+        .stat-card .lbl { font-size: 12px; color: var(--text-dim); }
+        .profile-welcome { background: linear-gradient(135deg, #1a56db 0%, #4f46e5 100%); border-radius: var(--radius-lg); padding: 28px 32px; color: white; margin-bottom: 28px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+        .profile-welcome h2 { font-family: 'Manrope', sans-serif; font-size: 24px; font-weight: 800; margin-bottom: 6px; }
+        .profile-welcome p { opacity: 0.9; font-size: 14px; }
+        .profile-welcome-meta { font-size: 12px; opacity: 0.75; margin-top: 10px; display: flex; flex-wrap: wrap; gap: 16px; }
+        .profile-welcome-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn-white { background: white; color: var(--blue); }
+        .btn-white:hover { background: #f0f7ff; }
+        .btn-outline-white { background: transparent; color: white; border: 1.5px solid rgba(255,255,255,0.5); }
+        .btn-outline-white:hover { background: rgba(255,255,255,0.1); }
+        .profile-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+        .profile-panel { background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; box-shadow: var(--shadow-sm); }
+        .profile-panel h3 { font-size: 15px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .profile-panel h3 a { font-size: 12px; font-weight: 600; color: var(--blue); }
+        .quick-actions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .quick-action { display: flex; align-items: center; gap: 12px; padding: 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 13px; font-weight: 600; color: var(--text-mid); transition: all 0.15s; }
+        .quick-action:hover { border-color: var(--blue); background: var(--blue-light); color: var(--blue); }
+        .quick-action i { width: 36px; height: 36px; border-radius: 8px; background: var(--bg-gray); display: flex; align-items: center; justify-content: center; color: var(--blue); }
+        .info-row { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--bg-gray2); font-size: 13px; }
+        .info-row:last-child { border-bottom: none; }
+        .info-row span:first-child { color: var(--text-dim); }
+        .info-row span:last-child { font-weight: 600; color: var(--text); text-align: right; }
+        .order-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+        .order-filter-btn { padding: 8px 16px; border-radius: 100px; border: 1px solid var(--border); background: white; font-size: 13px; font-weight: 600; color: var(--text-mid); cursor: pointer; transition: all 0.15s; }
+        .order-filter-btn:hover { border-color: var(--blue); color: var(--blue); }
+        .order-filter-btn.active { background: var(--blue); border-color: var(--blue); color: white; }
+        .profile-cart-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--bg-gray2); }
+        .profile-cart-item:last-child { border-bottom: none; }
+        .profile-cart-emoji { font-size: 24px; width: 40px; text-align: center; }
+        .profile-cart-info { flex: 1; min-width: 0; }
+        .profile-cart-name { font-size: 14px; font-weight: 600; }
+        .profile-cart-meta { font-size: 12px; color: var(--text-dim); }
+        .profile-cart-price { font-weight: 700; font-size: 14px; white-space: nowrap; }
+        .profile-cart-footer { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+        .profile-cart-total { font-size: 18px; font-weight: 800; color: var(--blue); font-family: 'Manrope', sans-serif; }
+        .settings-block { margin-bottom: 28px; }
+        .settings-block-title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+        .settings-block-sub { font-size: 13px; color: var(--text-dim); margin-bottom: 16px; }
+        .sidebar-badge { display: inline-block; margin-top: 10px; padding: 4px 10px; background: rgba(255,255,255,0.2); border-radius: 100px; font-size: 11px; font-weight: 600; }
+        .nav-badge { margin-left: auto; background: var(--blue-light); color: var(--blue); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 100px; }
+        .recent-order-mini { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--bg-gray2); cursor: pointer; }
+        .recent-order-mini:last-child { border-bottom: none; }
+        .recent-order-mini:hover .recent-order-title { color: var(--blue); }
+        .recent-order-title { font-size: 14px; font-weight: 600; transition: color 0.15s; }
+        .recent-order-sub { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+        /* Loading */
+        .loading-spinner { text-align: center; padding: 40px; color: var(--text-dim); }
+        .loading-spinner i { font-size: 24px; }
+        @media (max-width: 900px) {
+            .profile-layout { grid-template-columns: 1fr; }
+            .profile-sidebar { position: static; }
+            .edit-form-grid { grid-template-columns: 1fr; }
+            .stat-cards { grid-template-columns: 1fr 1fr; }
+            .profile-grid-2 { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 500px) { .stat-cards { grid-template-columns: 1fr; } .quick-actions { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<header class="header">
+    <div class="container nav-wrapper">
+        <a href="index.html" class="logo">Газпроект<span>Сервис Автоматика</span></a>
+        <nav class="nav">
+            <ul class="nav-list">
+                <li><a href="catalog.html">Каталог</a></li>
+                <li><a href="about.html">О компании</a></li>
+                <li><a href="support.html">Сервис</a></li>
+                <li><a href="delivery.html">Доставка</a></li>
+                <li><a href="docs.html">Документы</a></li>
+                <li><a href="contact.html">Контакты</a></li>
+            </ul>
+        </nav>
+        <div class="header-actions">
+            <button class="auth-btn" id="openAuth"><i class="fa-solid fa-user-check"></i> <span id="authBtnLabel">Профиль</span></button>
+            <div class="cart-icon" id="openCart"><i class="fa-solid fa-cart-shopping"></i><span id="cart-count">0</span></div>
+            <div class="burger" id="burger"><span></span></div>
+        </div>
+    </div>
+</header>
+<div class="mobile-menu" id="mobileMenu">
+    <a href="catalog.html">Каталог</a><a href="about.html">О компании</a><a href="support.html">Сервис</a>
+    <a href="delivery.html">Доставка</a><a href="docs.html">Документы</a><a href="contact.html">Контакты</a>
+</div>
+
+<section class="profile-page">
+    <div class="container">
+        <div id="notAuthed" style="display:none; text-align:center; padding:80px 20px;">
+            <i class="fa-solid fa-lock" style="font-size:40px; color:var(--text-dim); opacity:0.4; display:block; margin-bottom:16px;"></i>
+            <h2 style="margin-bottom:8px;">Требуется авторизация</h2>
+            <p style="color:var(--text-dim); margin-bottom:24px;">Войдите или зарегистрируйтесь, чтобы открыть личный кабинет</p>
+            <button type="button" class="btn btn-primary" onclick="openAuthModal('login')"><i class="fa-solid fa-right-to-bracket"></i> Войти</button>
+        </div>
+
+        <div id="profileLayout" class="profile-layout" style="display:none;">
+            <!-- Sidebar -->
+            <aside class="profile-sidebar">
+                <div class="profile-card">
+                    <div class="profile-avatar-wrap">
+                        <div class="profile-avatar" id="sbAvatar">GT</div>
+                        <div class="profile-avatar-name" id="sbCompany">—</div>
+                        <div class="profile-avatar-email" id="sbEmail">—</div>
+                        <span class="profile-type-badge" id="sbAccountType"><i class="fa-solid fa-user"></i> —</span>
+                        <span class="sidebar-badge" id="sbMemberSince">Клиент ГПСА</span>
+                    </div>
+                    <nav class="profile-nav">
+                        <div class="profile-nav-item active" data-tab="overview"><i class="fa-solid fa-house"></i> Обзор</div>
+                        <div class="profile-nav-item" data-tab="orders"><i class="fa-solid fa-box"></i> Заказы <span class="nav-badge" id="navOrdersBadge" style="display:none">0</span></div>
+                        <div class="profile-nav-item" data-tab="cart"><i class="fa-solid fa-cart-shopping"></i> Корзина <span class="nav-badge" id="navCartBadge" style="display:none">0</span></div>
+                        <div class="profile-nav-item" data-tab="settings"><i class="fa-solid fa-gear"></i> Настройки</div>
+                        <div class="profile-nav-divider"></div>
+                        <a href="catalog.html" class="profile-nav-item" style="text-decoration:none;"><i class="fa-solid fa-microchip"></i> Каталог</a>
+                        <a href="support.html" class="profile-nav-item" style="text-decoration:none;"><i class="fa-solid fa-headset"></i> Поддержка</a>
+                        <div class="profile-nav-divider"></div>
+                        <div class="profile-nav-item" id="logoutNavBtn" style="color:#dc2626;"><i class="fa-solid fa-right-from-bracket"></i> Выйти</div>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Content -->
+            <div>
+                <!-- Overview -->
+                <div class="profile-content active" id="tab-overview">
+                    <div class="profile-welcome">
+                        <div>
+                            <h2 id="welcomeTitle">Добро пожаловать!</h2>
+                            <p id="welcomeAccountText">Личный кабинет клиента · ООО «Газпроект Сервис Автоматика»</p>
+                            <div class="profile-welcome-meta">
+                                <span><i class="fa-solid fa-id-card"></i> ID: <span id="welcomeUserId">—</span></span>
+                                <span><i class="fa-solid fa-calendar"></i> С нами с <span id="welcomeSince">—</span></span>
+                            </div>
+                        </div>
+                        <div class="profile-welcome-actions">
+                            <a href="catalog.html" class="btn btn-white"><i class="fa-solid fa-plus"></i> Новый заказ</a>
+                            <button type="button" class="btn btn-outline-white" onclick="switchProfileTab('orders')"><i class="fa-solid fa-box"></i> Заказы</button>
+                        </div>
+                    </div>
+                    <div class="stat-cards">
+                        <div class="stat-card"><div class="stat-card-icon"><i class="fa-solid fa-box"></i></div><div><div class="big" id="statTotal">—</div><div class="lbl">Всего заказов</div></div></div>
+                        <div class="stat-card"><div class="stat-card-icon"><i class="fa-solid fa-ruble-sign"></i></div><div><div class="big" id="statSpent">—</div><div class="lbl">Сумма покупок</div></div></div>
+                        <div class="stat-card"><div class="stat-card-icon"><i class="fa-solid fa-truck"></i></div><div><div class="big" id="statActive">—</div><div class="lbl">В работе</div></div></div>
+                        <div class="stat-card"><div class="stat-card-icon"><i class="fa-solid fa-cart-shopping"></i></div><div><div class="big" id="statCart">—</div><div class="lbl">В корзине (₽)</div></div></div>
+                    </div>
+                    <div class="profile-grid-2">
+                        <div class="profile-panel">
+                            <h3>Последние заказы <a href="#" onclick="switchProfileTab('orders');return false">Все →</a></h3>
+                            <div id="recentOrdersList"><div class="loading-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i></div></div>
+                        </div>
+                        <div class="profile-panel">
+                            <h3>Быстрые действия</h3>
+                            <div class="quick-actions">
+                                <a href="catalog.html" class="quick-action"><i class="fa-solid fa-microchip"></i> Каталог</a>
+                                <a href="checkout.html" class="quick-action"><i class="fa-solid fa-file-invoice"></i> Оформить заказ</a>
+                                <a href="delivery.html" class="quick-action"><i class="fa-solid fa-truck"></i> Доставка</a>
+                                <a href="contact.html" class="quick-action"><i class="fa-solid fa-phone"></i> Связаться</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-panel">
+                        <h3>Данные аккаунта</h3>
+                        <div class="info-row"><span>Тип аккаунта</span><span id="infoAccountType">—</span></div>
+                        <div class="info-row"><span>Email</span><span id="infoEmail">—</span></div>
+                        <div class="info-row"><span id="infoPrimaryLabel">Компания</span><span id="infoCompany">—</span></div>
+                        <div class="info-row"><span>Телефон</span><span id="infoPhone">—</span></div>
+                        <div class="info-row"><span>Адрес доставки</span><span id="infoAddress">—</span></div>
+                    </div>
+                </div>
+
+                <!-- Orders -->
+                <div class="profile-content" id="tab-orders">
+                    <div class="profile-section-title">Мои заказы</div>
+                    <div class="profile-section-sub">История заказов и статусы отгрузки</div>
+                    <div class="order-filters">
+                        <button type="button" class="order-filter-btn active" data-filter="all">Все</button>
+                        <button type="button" class="order-filter-btn" data-filter="active">В работе</button>
+                        <button type="button" class="order-filter-btn" data-filter="delivered">Доставленные</button>
+                        <button type="button" class="order-filter-btn" data-filter="cancelled">Отменённые</button>
+                    </div>
+                    <div id="ordersContainer"><div class="loading-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i></div></div>
+                </div>
+
+                <!-- Cart -->
+                <div class="profile-content" id="tab-cart">
+                    <div class="profile-section-title">Корзина</div>
+                    <div class="profile-section-sub">Текущие позиции перед оформлением</div>
+                    <div class="profile-card" style="padding:24px;" id="profileCartBox">
+                        <div class="loading-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i></div>
+                    </div>
+                </div>
+
+                <!-- Settings -->
+                <div class="profile-content" id="tab-settings">
+                    <div class="profile-section-title">Настройки</div>
+                    <div class="profile-section-sub">Контакты, адрес и безопасность аккаунта</div>
+
+                    <div class="settings-block profile-card" style="padding:28px;">
+                        <div class="settings-block-title" id="settingsProfileTitle">Профиль компании</div>
+                        <div class="settings-block-sub">Используются при оформлении заказов и связи с менеджером</div>
+                        <div class="edit-form-grid" id="editForm">
+                            <div class="form-field full">
+                                <label class="form-label">Email (нельзя изменить)</label>
+                                <input class="form-input" id="editEmail" disabled style="background:var(--bg-gray2); color:var(--text-dim);">
+                            </div>
+                            <div class="form-field full">
+                                <label class="form-label" id="editCompanyLabel">Компания</label>
+                                <input class="form-input" id="editCompany" placeholder="ООО «Ваша компания»">
+                            </div>
+                            <div class="form-field">
+                                <label class="form-label">Телефон</label>
+                                <input class="form-input" type="tel" id="editPhone" placeholder="+7 (___) ___ __-__" data-phone-mask>
+                            </div>
+                            <div class="form-field">
+                                <label class="form-label">ID клиента</label>
+                                <input class="form-input" id="editClientId" disabled style="background:var(--bg-gray2); color:var(--text-dim);">
+                            </div>
+                            <div class="form-field full">
+                                <label class="form-label">Адрес доставки по умолчанию</label>
+                                <input class="form-input" id="editAddress" placeholder="Улица, дом, офис (Москва)">
+                            </div>
+                            <div class="form-actions full">
+                                <button type="button" class="btn btn-primary" id="saveProfileBtn"><i class="fa-solid fa-floppy-disk"></i> Сохранить изменения</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-block profile-card" style="padding:28px;">
+                        <div class="settings-block-title">Безопасность</div>
+                        <div class="settings-block-sub">Смените пароль для защиты аккаунта</div>
+                        <div class="edit-form-grid">
+                            <div class="form-field full">
+                                <label class="form-label">Текущий пароль</label>
+                                <input class="form-input" type="password" id="currentPassword" placeholder="••••••••">
+                            </div>
+                            <div class="form-field">
+                                <label class="form-label">Новый пароль</label>
+                                <input class="form-input" type="password" id="newPassword" placeholder="Минимум 6 символов">
+                            </div>
+                            <div class="form-field">
+                                <label class="form-label">Повторите пароль</label>
+                                <input class="form-input" type="password" id="confirmPassword" placeholder="••••••••">
+                            </div>
+                            <div class="form-actions full">
+                                <button type="button" class="btn btn-outline" id="changePasswordBtn"><i class="fa-solid fa-key"></i> Сменить пароль</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-info"><a href="index.html" class="logo">Газпроект<span>Сервис Автоматика</span></a><p>ООО «Газпроект Сервис Автоматика» — газовый анализ и промышленная автоматика.</p></div>
+            <div class="footer-col"><h4>Разделы</h4><a href="catalog.html">Каталог</a><a href="about.html">О нас</a><a href="contact.html">Контакты</a></div>
+            <div class="footer-col"><h4>Продукция</h4><a href="#">Датчики газа</a><a href="#">Газоанализаторы</a><a href="#">Течеискатели</a></div>
+            <div class="footer-col"><h4>Подписка</h4><form class="sub-form" onsubmit="return false"><input type="email" placeholder="Email"><button type="submit"><i class="fa-solid fa-paper-plane"></i></button></form></div>
+        </div>
+        <div class="footer-bottom"><p>© 2025 ООО «Газпроектсервисавтоматика». Все права защищены.</p></div>
+    </div>
+</footer>
+
+<div class="modal-overlay" id="authModal"><div class="modal-content"><div class="modal-header"><h3>Личный кабинет</h3><p>Вход и регистрация</p></div><button type="button" class="close-modal" id="closeAuth">&times;</button><div class="modal-tabs"><button type="button" class="tab-btn active" data-tab="login">Вход</button><button type="button" class="tab-btn" data-tab="reg">Регистрация</button></div><form id="loginForm" class="auth-form active" onsubmit="return false"><input type="email" placeholder="Email"><input type="password" placeholder="Пароль"><button type="submit" class="btn btn-primary btn-block">Войти</button></form><form id="regForm" class="auth-form" onsubmit="return false"><input type="text" placeholder="Компания"><input type="email" placeholder="Email"><input type="password" placeholder="Пароль"><button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button></form></div></div>
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-drawer" id="cartDrawer"><div class="cart-header"><h3>Корзина</h3><button class="cart-close" id="closeCart">&times;</button></div><div class="cart-items" id="cartItems"><div class="cart-empty"><i class="fa-solid fa-cart-shopping"></i><p>Корзина пуста</p></div></div><div class="cart-footer"><div class="cart-total"><span>Итого</span><strong id="cartTotal">0 ₽</strong></div><button class="checkout-btn" id="checkoutBtn">Оформить заказ</button></div></div>
+<div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastMsg">Готово!</span></div>
+
+<script src="script.js"></script>
+<script>
+const STATUS_LABELS = {
+    new:'Новый', confirmed:'Подтверждён', processing:'В работе',
+    shipped:'Отгружен', delivered:'Доставлен', cancelled:'Отменён'
+};
+
+let profileOrders = [];
+let orderFilter = 'all';
+
+function escapeHtml(s) {
+    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function formatDate(ts) {
+    return new Date(ts).toLocaleDateString('ru-RU', { day: '2-digit', month: 'long', year: 'numeric' });
+}
+
+function getInitials(name, email) {
+    const src = (name || email || 'GT').trim();
+    const parts = src.split(/\s+/).filter(Boolean);
+    if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+    return src.slice(0, 2).toUpperCase();
+}
+
+function getAccountType() {
+    return meUser?.accountType === 'person' ? 'person' : 'legal';
+}
+
+function getAccountTypeLabel() {
+    return getAccountType() === 'person' ? 'Физическое лицо' : 'Компания';
+}
+
+function getPrimaryLabel() {
+    return getAccountType() === 'person' ? 'Имя' : 'Компания';
+}
+
+function getPrimaryName() {
+    return meUser?.company || meUser?.email?.split('@')[0] || '—';
+}
+
+function switchProfileTab(tab) {
+    document.querySelectorAll('.profile-nav-item[data-tab]').forEach(i => {
+        i.classList.toggle('active', i.dataset.tab === tab);
+    });
+    document.querySelectorAll('.profile-content').forEach(c => c.classList.remove('active'));
+    document.getElementById('tab-' + tab)?.classList.add('active');
+    if (tab === 'cart') renderProfileCart();
+}
+window.switchProfileTab = switchProfileTab;
+
+function updateProfileSidebar() {
+    const company = getPrimaryName();
+    const typeIcon = getAccountType() === 'person' ? 'fa-user' : 'fa-building';
+    document.getElementById('sbEmail').textContent = meUser.email;
+    document.getElementById('sbCompany').textContent = company;
+    document.getElementById('sbAvatar').textContent = getInitials(meUser.company, meUser.email);
+    document.getElementById('sbAccountType').innerHTML = `<i class="fa-solid ${typeIcon}"></i> ${getAccountTypeLabel()}`;
+    if (meUser.createdAt) {
+        document.getElementById('sbMemberSince').textContent = 'С ' + formatDate(meUser.createdAt);
+    }
+}
+
+function updateProfileInfoPanels() {
+    const company = getPrimaryName();
+    const phone = meUser.phone ? formatRuPhone(meUser.phone) : '—';
+    const address = meUser.address || '—';
+    document.getElementById('welcomeTitle').textContent = 'Здравствуйте, ' + company + '!';
+    document.getElementById('welcomeAccountText').textContent = getAccountType() === 'person'
+        ? 'Личный кабинет физического лица · Газпроект Сервис Автоматика'
+        : 'Личный кабинет компании · Газпроект Сервис Автоматика';
+    document.getElementById('welcomeUserId').textContent = '#' + (meUser.id || '—');
+    document.getElementById('welcomeSince').textContent = meUser.createdAt ? formatDate(meUser.createdAt) : '—';
+    document.getElementById('infoAccountType').textContent = getAccountTypeLabel();
+    document.getElementById('infoEmail').textContent = meUser.email;
+    document.getElementById('infoPrimaryLabel').textContent = getPrimaryLabel();
+    document.getElementById('infoCompany').textContent = company;
+    document.getElementById('infoPhone').textContent = phone;
+    document.getElementById('infoAddress').textContent = address;
+    document.getElementById('settingsProfileTitle').textContent = getAccountType() === 'person' ? 'Профиль пользователя' : 'Профиль компании';
+    document.getElementById('editCompanyLabel').textContent = getPrimaryLabel();
+    document.getElementById('editCompany').placeholder = getAccountType() === 'person' ? 'Имя и фамилия' : 'ООО «Ваша компания»';
+    document.getElementById('editEmail').value = meUser.email;
+    document.getElementById('editCompany').value = meUser.company || '';
+    document.getElementById('editPhone').value = meUser.phone ? formatRuPhone(meUser.phone) : '';
+    initPhoneMasks();
+    document.getElementById('editAddress').value = meUser.address || '';
+    document.getElementById('editClientId').value = meUser.id ? '#' + meUser.id : '—';
+}
+
+function updateOrderStats(orders) {
+    const total = orders.length;
+    const spent = orders.filter(o => o.status !== 'cancelled').reduce((s, o) => s + o.total, 0);
+    const active = orders.filter(o => !['delivered', 'cancelled'].includes(o.status)).length;
+    const cartSum = cart.reduce((s, i) => s + i.price * i.qty, 0);
+
+    document.getElementById('statTotal').textContent = total;
+    document.getElementById('statSpent').textContent = spent.toLocaleString();
+    document.getElementById('statActive').textContent = active;
+    document.getElementById('statCart').textContent = cartSum.toLocaleString();
+
+    const ordersBadge = document.getElementById('navOrdersBadge');
+    if (ordersBadge) {
+        ordersBadge.textContent = total;
+        ordersBadge.style.display = total > 0 ? 'inline' : 'none';
+    }
+    const cartBadge = document.getElementById('navCartBadge');
+    const cartQty = cart.reduce((s, i) => s + i.qty, 0);
+    if (cartBadge) {
+        cartBadge.textContent = cartQty;
+        cartBadge.style.display = cartQty > 0 ? 'inline' : 'none';
+    }
+}
+
+function renderOrderCard(order) {
+    return `
+        <div class="order-card">
+            <div class="order-header" onclick="toggleOrder(this)">
+                <div class="order-header-left">
+                    <div>
+                        <div class="order-num">Заказ #${order.id}</div>
+                        <div class="order-date">${formatDate(order.created_at)}</div>
+                    </div>
+                    <span class="order-status ${order.status}">${STATUS_LABELS[order.status] || order.status}</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:16px;">
+                    <div class="order-total">${order.total.toLocaleString()} ₽</div>
+                    <i class="fa-solid fa-chevron-down order-chevron"></i>
+                </div>
+            </div>
+            <div class="order-body">
+                ${order.items.map(it => {
+                    const isPath = it.img && (it.img.includes('/') || it.img.includes('.'));
+                    const imgHtml = isPath
+                        ? `<img src="${it.img}" alt="${escapeHtml(it.name)}" style="width:36px;height:36px;object-fit:cover;border-radius:6px;" onerror="this.outerHTML='<span style=\\'font-size:22px;\\'>📦</span>'" />`
+                        : `<span style="font-size:22px;">${it.img || '📦'}</span>`;
+                    return `
+                    <div class="order-item-row">
+                        <div class="order-item-emoji">${imgHtml}</div>
+                        <div class="order-item-name">${escapeHtml(it.name)}</div>
+                        <div class="order-item-qty">× ${it.qty}</div>
+                        <div class="order-item-price">${(it.price * it.qty).toLocaleString()} ₽</div>
+                    </div>`;
+                }).join('')}
+                ${order.comment ? `<div style="margin-top:12px;padding:10px 14px;background:var(--bg-gray);border-radius:8px;font-size:13px;color:var(--text-dim);white-space:pre-line;"><b>Детали:</b><br>${escapeHtml(order.comment)}</div>` : ''}
+            </div>
+        </div>
+    `;
+}
+
+function filterOrders(orders) {
+    if (orderFilter === 'active') return orders.filter(o => !['delivered', 'cancelled'].includes(o.status));
+    if (orderFilter === 'delivered') return orders.filter(o => o.status === 'delivered');
+    if (orderFilter === 'cancelled') return orders.filter(o => o.status === 'cancelled');
+    return orders;
+}
+
+function renderOrdersList() {
+    const container = document.getElementById('ordersContainer');
+    const filtered = filterOrders(profileOrders);
+
+    if (!profileOrders.length) {
+        container.innerHTML = `<div class="orders-empty"><i class="fa-solid fa-box-open"></i><p>Заказов пока нет</p><a href="catalog.html" class="btn btn-primary"><i class="fa-solid fa-list"></i> Перейти в каталог</a></div>`;
+        return;
+    }
+    if (!filtered.length) {
+        container.innerHTML = `<div class="orders-empty"><i class="fa-solid fa-filter"></i><p>Нет заказов в этой категории</p></div>`;
+        return;
+    }
+    container.innerHTML = filtered.map(renderOrderCard).join('');
+}
+
+function renderRecentOrders() {
+    const el = document.getElementById('recentOrdersList');
+    if (!el) return;
+    const recent = profileOrders.slice(0, 3);
+    if (!recent.length) {
+        el.innerHTML = `<p style="color:var(--text-dim);font-size:14px;text-align:center;padding:20px 0;">Заказов пока нет. <a href="catalog.html" style="color:var(--blue);font-weight:600;">Перейти в каталог</a></p>`;
+        return;
+    }
+    el.innerHTML = recent.map(order => `
+        <div class="recent-order-mini" onclick="switchProfileTab('orders')">
+            <div>
+                <div class="recent-order-title">Заказ #${order.id} · ${order.total.toLocaleString()} ₽</div>
+                <div class="recent-order-sub">${formatDate(order.created_at)} · ${STATUS_LABELS[order.status] || order.status}</div>
+            </div>
+            <span class="order-status ${order.status}">${STATUS_LABELS[order.status] || order.status}</span>
+        </div>
+    `).join('');
+}
+
+function renderProfileCart() {
+    const box = document.getElementById('profileCartBox');
+    if (!box) return;
+    if (!cart.length) {
+        box.innerHTML = `<div class="orders-empty" style="padding:40px 20px;"><i class="fa-solid fa-cart-shopping"></i><p>Корзина пуста</p><a href="catalog.html" class="btn btn-primary">В каталог</a></div>`;
+        return;
+    }
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    box.innerHTML = `
+        ${cart.map(item => {
+            const isPath = item.img && (item.img.includes('/') || item.img.includes('.'));
+            const imgHtml = isPath
+                ? `<img src="${item.img}" alt="${escapeHtml(item.name)}" style="width:40px;height:40px;object-fit:cover;border-radius:8px;" onerror="this.outerHTML='<span style=\\'font-size:24px;\\'>📦</span>'" />`
+                : `<span style="font-size:24px;">${item.img || '📦'}</span>`;
+            return `
+            <div class="profile-cart-item">
+                <div class="profile-cart-emoji">${imgHtml}</div>
+                <div class="profile-cart-info">
+                    <div class="profile-cart-name">${escapeHtml(item.name)}</div>
+                    <div class="profile-cart-meta">${item.qty} × ${item.price.toLocaleString()} ₽</div>
+                </div>
+                <div class="profile-cart-price">${(item.price * item.qty).toLocaleString()} ₽</div>
+            </div>`;
+        }).join('')}
+        <div class="profile-cart-footer">
+            <div class="profile-cart-total">Итого: ${total.toLocaleString()} ₽</div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                <button type="button" class="btn btn-outline" onclick="document.getElementById('openCart').click()"><i class="fa-solid fa-pen"></i> Изменить</button>
+                <a href="checkout.html" class="btn btn-primary"><i class="fa-solid fa-check"></i> Оформить</a>
+            </div>
+        </div>
+    `;
+}
+
+async function loadProfileData() {
+    if (!isAuthed()) {
+        document.getElementById('notAuthed').style.display = 'block';
+        document.getElementById('profileLayout').style.display = 'none';
+        setTimeout(() => openAuthModal('login'), 200);
+        return;
+    }
+    document.getElementById('notAuthed').style.display = 'none';
+    document.getElementById('profileLayout').style.display = 'grid';
+    updateProfileSidebar();
+    updateProfileInfoPanels();
+    await loadOrders();
+    renderProfileCart();
+}
+window.loadProfileData = loadProfileData;
+
+async function loadOrders() {
+    const container = document.getElementById('ordersContainer');
+    container.innerHTML = '<div class="loading-spinner"><i class="fa-solid fa-circle-notch fa-spin"></i></div>';
+    try {
+        const data = await apiFetch('/api/orders');
+        profileOrders = data.orders || [];
+        updateOrderStats(profileOrders);
+        renderRecentOrders();
+        renderOrdersList();
+    } catch {
+        container.innerHTML = `<div class="orders-empty"><i class="fa-solid fa-triangle-exclamation"></i><p>Не удалось загрузить заказы</p></div>`;
+    }
+}
+
+function toggleOrder(header) {
+    header.classList.toggle('open');
+    header.nextElementSibling.classList.toggle('open');
+}
+window.toggleOrder = toggleOrder;
+
+document.querySelectorAll('.profile-nav-item[data-tab]').forEach(item => {
+    item.addEventListener('click', () => switchProfileTab(item.dataset.tab));
+});
+
+document.querySelectorAll('.order-filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        orderFilter = btn.dataset.filter;
+        document.querySelectorAll('.order-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+        renderOrdersList();
+    });
+});
+
+document.getElementById('logoutNavBtn')?.addEventListener('click', async () => {
+    await logout();
+    window.location.href = 'index.html';
+});
+
+document.getElementById('saveProfileBtn')?.addEventListener('click', async () => {
+    const company = document.getElementById('editCompany').value.trim();
+    const phone = document.getElementById('editPhone').value.trim();
+    const address = document.getElementById('editAddress').value.trim();
+    try {
+        await apiFetch('/api/profile', { method: 'PUT', body: JSON.stringify({ company, phone, address }) });
+        meUser.company = company;
+        meUser.phone = phone;
+        meUser.address = address;
+        updateProfileSidebar();
+        updateProfileInfoPanels();
+        showToast('Профиль обновлён!');
+    } catch { showToast('Ошибка сохранения'); }
+});
+
+document.getElementById('changePasswordBtn')?.addEventListener('click', async () => {
+    const current = document.getElementById('currentPassword').value;
+    const next = document.getElementById('newPassword').value;
+    const confirm = document.getElementById('confirmPassword').value;
+    if (!current || !next) { showToast('Заполните поля пароля'); return; }
+    if (next.length < 6) { showToast('Новый пароль — минимум 6 символов'); return; }
+    if (next !== confirm) { showToast('Пароли не совпадают'); return; }
+    try {
+        await apiFetch('/api/profile/password', { method: 'PUT', body: JSON.stringify({ currentPassword: current, newPassword: next }) });
+        document.getElementById('currentPassword').value = '';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+        showToast('Пароль изменён!');
+    } catch (err) {
+        if (err.status === 401) showToast('Неверный текущий пароль');
+        else showToast('Не удалось сменить пароль');
+    }
+});
+
+document.getElementById('checkoutBtn')?.addEventListener('click', goToCheckout);
+
+document.addEventListener('DOMContentLoaded', async () => {
+    await refreshMe();
+    await loadCart();
+    updateCartCount();
+    initCart();
+    initBurger();
+    await loadProfileData();
+
+    // Redirect admin to admin panel
+    if (meUser?.isAdmin) {
+        const adminLink = document.createElement('div');
+        adminLink.className = 'profile-nav-item';
+        adminLink.innerHTML = '<i class="fa-solid fa-shield-halved"></i> Панель администратора';
+        adminLink.style.color = '#7c3aed';
+        adminLink.onclick = () => window.location.href = 'admin.html';
+        document.querySelector('.profile-nav').insertBefore(adminLink, document.querySelector('.profile-nav-divider'));
+    }
+});
+</script>
+</body>
+</html>

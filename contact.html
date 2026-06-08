@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакты | Газпроект Сервис Автоматика</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="header">
+    <div class="container nav-wrapper">
+        <a href="index.html" class="logo">Газпроект<span>Сервис Автоматика</span></a>
+        <nav class="nav">
+            <ul class="nav-list">
+                <li><a href="catalog.html">Каталог</a></li>
+                <li><a href="about.html">О компании</a></li>
+                <li><a href="support.html">Сервис</a></li>
+                <li><a href="delivery.html">Доставка</a></li>
+                <li><a href="docs.html">Документы</a></li>
+                <li><a href="contact.html" class="active">Контакты</a></li>
+            </ul>
+        </nav>
+        <div class="header-actions">
+            <button class="auth-btn" id="openAuth"><i class="fa-solid fa-user"></i> Войти</button>
+            <div class="cart-icon" id="openCart"><i class="fa-solid fa-cart-shopping"></i><span id="cart-count">0</span></div>
+            <div class="burger" id="burger"><span></span></div>
+        </div>
+    </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+    <a href="catalog.html">Каталог</a>
+    <a href="about.html">О компании</a>
+    <a href="support.html">Сервис</a>
+    <a href="delivery.html">Доставка</a>
+    <a href="docs.html">Документы</a>
+    <a href="contact.html">Контакты</a>
+</div>
+
+<div class="page-hero">
+    <div class="container">
+        <div class="section-tag animate-up">Контакты</div>
+        <h1 class="animate-up-delay">Свяжитесь с нами</h1>
+        <p class="animate-up-delay-2">Рассмотрим обращение и поможем подобрать оборудование для контроля газа</p>
+    </div>
+</div>
+
+<section class="contact-section">
+    <div class="container">
+
+        <!-- Info Cards -->
+        <div class="contact-info-grid">
+            <div class="contact-info-card reveal">
+                <div class="contact-info-card-icon"><i class="fa-solid fa-phone"></i></div>
+                <div><div class="info-label">Телефон</div><div class="info-val">+7 (3532) 00-00-00</div></div>
+            </div>
+            <div class="contact-info-card reveal">
+                <div class="contact-info-card-icon"><i class="fa-solid fa-envelope"></i></div>
+                <div><div class="info-label">Email</div><div class="info-val">info@gazproekt-sa.ru</div></div>
+            </div>
+            <div class="contact-info-card reveal">
+                <div class="contact-info-card-icon"><i class="fa-solid fa-location-dot"></i></div>
+                <div><div class="info-label">Адрес</div><div class="info-val">г. Оренбург, ул. Советская, д. 42</div></div>
+            </div>
+            <div class="contact-info-card reveal">
+                <div class="contact-info-card-icon"><i class="fa-solid fa-clock"></i></div>
+                <div><div class="info-label">Режим работы</div><div class="info-val">Пн–Пт, 9:00–18:00</div></div>
+            </div>
+        </div>
+
+        <div class="contact-grid">
+            <div class="contact-form-wrapper reveal">
+                <h2>Отправить запрос</h2>
+                <p>Заполните форму — специалист свяжется с вами для уточнения заявки</p>
+                <form id="contactForm" onsubmit="handleContact(event)">
+                    <div class="input-row">
+                        <input type="text" id="contactName" placeholder="Имя" required>
+                        <input type="tel" id="contactPhone" placeholder="+7 (___) ___ __-__" required>
+                    </div>
+                    <input type="text" id="contactCompany" placeholder="Компания">
+                    <select id="contactTopic" required>
+                        <option value="">Выберите тему запроса</option>
+                        <option value="Подбор оборудования">Подбор оборудования</option>
+                        <option value="Сервис и поддержка">Сервис и поддержка</option>
+                        <option value="Доставка и оплата">Доставка и оплата</option>
+                        <option value="Документы">Документы</option>
+                        <option value="Другое">Другое</option>
+                    </select>
+                    <textarea id="contactMessage" placeholder="Ваше сообщение или вопрос..." rows="5" required></textarea>
+                    <button type="submit" class="submit-btn">
+                        <i class="fa-solid fa-paper-plane icon-left"></i>Отправить запрос
+                    </button>
+                </form>
+            </div>
+
+            <div class="reveal reveal-delay">
+                <div class="map-container map-stack">
+                    <div id="map">
+                        <iframe
+                            title="Газпроект Сервис Автоматика — Яндекс Карты"
+                            src="https://yandex.ru/map-widget/v1/?text=%D0%9E%D1%80%D0%B5%D0%BD%D0%B1%D1%83%D1%80%D0%B3%2C%20%D0%A1%D0%BE%D0%B2%D0%B5%D1%82%D1%81%D0%BA%D0%B0%D1%8F%2042&z=16"
+                            width="100%"
+                            height="100%"
+                            frameborder="0"
+                            class="yandex-iframe"
+                            allowfullscreen="true"
+                        ></iframe>
+                    </div>
+                </div>
+                <!-- Offices -->
+                <div class="office-grid">
+                    <div class="office-card">
+                        <div class="office-city">Оренбург</div>
+                        <div class="office-title">Офис компании</div>
+                        <div class="office-line">ул. Советская, д. 42</div>
+                    </div>
+                    <div class="office-card">
+                        <div class="office-city">График</div>
+                        <div class="office-title">Пн–Пт, 9:00–18:00</div>
+                        <div class="office-line">Обращения через сайт принимаются круглосуточно</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-info"><a href="index.html" class="logo">Газпроект<span>Сервис Автоматика</span></a><p>ООО «Газпроектсервисавтоматика» — поставка датчиков газа и газоаналитического оборудования.</p></div>
+            <div class="footer-col"><h4>Разделы</h4><a href="catalog.html">Каталог</a><a href="about.html">О нас</a><a href="contact.html">Контакты</a></div>
+            <div class="footer-col"><h4>Продукция</h4><a href="#">Датчики газа</a><a href="#">Газоанализаторы</a><a href="#">Течеискатели</a></div>
+            <div class="footer-col"><h4>Подписка</h4><form class="sub-form" onsubmit="return false"><input type="email" placeholder="Email"><button type="submit"><i class="fa-solid fa-paper-plane"></i></button></form></div>
+        </div>
+        <div class="footer-bottom"><p>© 2025 ООО «Газпроектсервисавтоматика». Все права защищены.</p><div class="footer-socials"><a href="#"><i class="fa-brands fa-telegram"></i></a><a href="#"><i class="fa-brands fa-vk"></i></a><a href="#"><i class="fa-solid fa-envelope"></i></a></div></div>
+    </div>
+</footer>
+
+<div class="modal-overlay" id="authModal"><div class="modal-content"><div class="modal-header"><h3>Личный кабинет</h3><p>Вход и регистрация</p></div><button type="button" class="close-modal" id="closeAuth">&times;</button><div class="modal-tabs"><button type="button" class="tab-btn active" data-tab="login">Вход</button><button type="button" class="tab-btn" data-tab="reg">Регистрация</button></div><form id="loginForm" class="auth-form active" onsubmit="return false"><input type="email" placeholder="Email"><input type="password" placeholder="Пароль"><button type="submit" class="btn btn-primary btn-block">Войти</button></form><form id="regForm" class="auth-form" onsubmit="return false"><input type="text" placeholder="Компания"><input type="email" placeholder="Email"><input type="password" placeholder="Пароль"><button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button></form></div></div>
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-drawer" id="cartDrawer"><div class="cart-header"><h3>Корзина</h3><button class="cart-close" id="closeCart">&times;</button></div><div class="cart-items" id="cartItems"><div class="cart-empty"><i class="fa-solid fa-cart-shopping"></i><p>Корзина пуста</p></div></div><div class="cart-footer"><div class="cart-total"><span>Итого</span><strong id="cartTotal">0 ₽</strong></div><button class="checkout-btn">Оформить заказ</button></div></div>
+<div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastMsg">Сообщение отправлено!</span></div>
+
+<script src="script.js"></script>
+<script>
+async function handleContact(e) {
+    e.preventDefault();
+    const form = e.target;
+    const btn = form.querySelector('button[type="submit"]');
+    const payload = {
+        name: document.getElementById('contactName').value.trim(),
+        phone: window.formatRuPhone ? formatRuPhone(document.getElementById('contactPhone').value) : document.getElementById('contactPhone').value.trim(),
+        company: document.getElementById('contactCompany').value.trim(),
+        topic: document.getElementById('contactTopic').value,
+        message: document.getElementById('contactMessage').value.trim()
+    };
+
+    if (payload.name.length < 2) { showToast('Введите имя'); return; }
+    if (window.isValidPhone && !isValidPhone(payload.phone)) { showToast('Введите корректный телефон'); return; }
+    if (!payload.topic) { showToast('Выберите тему запроса'); return; }
+    if (payload.message.length < 10) { showToast('Сообщение минимум 10 символов'); return; }
+    if (payload.message.length > 2000) { showToast('Сообщение слишком длинное'); return; }
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin icon-left"></i>Отправляем...';
+    try {
+        await apiFetch('/api/contact-requests', {
+            method: 'POST',
+            body: JSON.stringify(payload)
+        });
+        showToast('Заявка отправлена! Свяжемся с вами в ближайшее время.');
+        form.reset();
+    } catch (err) {
+        if (err.data?.error === 'invalid_phone') showToast('Введите корректный телефон');
+        else if (err.data?.error === 'invalid_message') showToast('Сообщение минимум 10 символов');
+        else showToast('Не удалось отправить заявку. Проверьте телефон и тему запроса.');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane icon-left"></i>Отправить запрос';
+    }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Администратор | Газпроект Сервис Автоматика</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { background: #f1f5f9; }
+        .admin-wrap { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+        /* Sidebar */
+        .admin-sidebar { background: #0f172a; color: white; position: sticky; top: 0; height: 100vh; overflow-y: auto; display: flex; flex-direction: column; }
+        .admin-logo { padding: 24px 20px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .admin-logo .logo { font-size: 18px; }
+        .admin-logo .logo span { color: #60a5fa; }
+        .admin-badge { display: inline-block; margin-top: 6px; padding: 2px 8px; background: rgba(124,58,237,0.3); color: #a78bfa; border-radius: 4px; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+        .admin-nav { padding: 16px 0; flex: 1; }
+        .admin-nav-section { padding: 8px 16px 4px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
+        .admin-nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.6); cursor: pointer; transition: all 0.15s; border-left: 3px solid transparent; }
+        .admin-nav-item:hover { color: white; background: rgba(255,255,255,0.06); }
+        .admin-nav-item.active { color: white; background: rgba(99,102,241,0.2); border-left-color: #6366f1; }
+        .admin-nav-item i { width: 14px; text-align: center; font-size: 12px; }
+        .admin-nav-badge { margin-left: auto; background: #ef4444; color: white; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 10px; }
+        .admin-sidebar-footer { padding: 16px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .admin-sidebar-user { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .admin-sidebar-avatar { width: 32px; height: 32px; background: #6366f1; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; color: white; flex-shrink: 0; }
+        .admin-sidebar-info { font-size: 11px; }
+        .admin-sidebar-email { color: rgba(255,255,255,0.7); }
+        .admin-sidebar-role { color: #a78bfa; font-weight: 700; font-size: 10px; text-transform: uppercase; }
+        /* Main */
+        .admin-main { padding: 32px; overflow-x: hidden; }
+        .admin-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+        .admin-title { font-size: 22px; font-weight: 800; color: #0f172a; font-family: 'Manrope', sans-serif; }
+        .admin-subtitle { font-size: 13px; color: #64748b; margin-top: 2px; }
+        /* Content tabs */
+        .admin-content { display: none; }
+        .admin-content.active { display: block; }
+        /* Stats grid */
+        .admin-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+        .admin-stat-card { background: white; border-radius: 12px; padding: 20px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .admin-stat-card .icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; margin-bottom: 12px; }
+        .icon-blue { background: #eff6ff; color: #1d4ed8; }
+        .icon-green { background: #f0fdf4; color: #16a34a; }
+        .icon-purple { background: #faf5ff; color: #7c3aed; }
+        .icon-orange { background: #fff7ed; color: #ea580c; }
+        .admin-stat-card .val { font-size: 26px; font-weight: 800; color: #0f172a; font-family: 'Manrope', sans-serif; }
+        .admin-stat-card .lbl { font-size: 12px; color: #64748b; margin-top: 2px; }
+        /* Table */
+        .admin-table-wrap { background: white; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); overflow: hidden; }
+        .admin-table-head { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #e2e8f0; gap: 12px; flex-wrap: wrap; }
+        .admin-table-title { font-size: 15px; font-weight: 700; color: #0f172a; }
+        .admin-table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .admin-search { display: flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; background: #f8fafc; }
+        .admin-search input { border: none; outline: none; background: transparent; font-family: inherit; font-size: 13px; width: 180px; }
+        .admin-filter-select { padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; background: white; font-family: inherit; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; }
+        .admin-table-scroll table { min-width: 760px; }
+        .admin-table-scroll .users-table { min-width: 920px; }
+        .admin-table-scroll .products-table { min-width: 640px; }
+        .admin-table-scroll .requests-table { min-width: 900px; }
+        th { padding: 10px 16px; text-align: left; font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+        td { padding: 12px 16px; font-size: 13px; color: #334155; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: #f8fafc; }
+        .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        .badge.new        { background:#eff6ff; color:#1d4ed8; }
+        .badge.confirmed  { background:#faf5ff; color:#7c3aed; }
+        .badge.processing { background:#fffbeb; color:#d97706; }
+        .badge.shipped    { background:#e0f2fe; color:#0284c7; }
+        .badge.delivered  { background:#f0fdf4; color:#16a34a; }
+        .badge.cancelled  { background:#fef2f2; color:#dc2626; }
+        .badge.done       { background:#f0fdf4; color:#16a34a; }
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; background: currentColor; }
+        .action-btn { padding: 5px 10px; border-radius: 6px; border: 1px solid #e2e8f0; background: white; font-size: 12px; cursor: pointer; font-family: inherit; transition: all 0.15s; color: #334155; }
+        .action-btn:hover { border-color: #6366f1; color: #6366f1; background: #f5f3ff; }
+        select.inline-select { padding: 4px 8px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 12px; font-family: inherit; background: white; cursor: pointer; color: #334155; }
+        .order-items-toggle { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+        .order-items-toggle i { transition: transform 0.15s; }
+        .order-items-toggle.open i { transform: rotate(180deg); }
+        .order-detail-row[hidden] { display: none; }
+        .order-detail-row td { background: #f8fafc; padding: 0 16px 16px; }
+        .order-detail-panel { border: 1px solid #e2e8f0; border-radius: 12px; background: white; padding: 14px; }
+        .order-detail-title { font-size: 12px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 12px; }
+        .order-items-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+        .order-item-card { display: grid; grid-template-columns: 48px 1fr; gap: 12px; align-items: center; padding: 10px; border: 1px solid #e2e8f0; border-radius: 10px; background: #fff; min-width: 0; }
+        .order-item-img { width: 48px; height: 48px; border-radius: 8px; background: #f1f5f9; display: flex; align-items: center; justify-content: center; color: #94a3b8; overflow: hidden; }
+        .order-item-img img { width: 100%; height: 100%; object-fit: contain; }
+        .order-item-name { font-size: 12px; font-weight: 700; color: #0f172a; line-height: 1.35; }
+        .order-item-meta { margin-top: 4px; font-size: 12px; color: #64748b; }
+        /* Charts area */
+        .admin-charts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+        .admin-chart-card { background: white; border-radius: 12px; border: 1px solid #e2e8f0; padding: 20px; }
+        .admin-chart-title { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 16px; }
+        .status-bar { margin-bottom: 10px; }
+        .status-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: #64748b; margin-bottom: 4px; }
+        .status-bar-track { height: 6px; background: #f1f5f9; border-radius: 3px; overflow: hidden; }
+        .status-bar-fill { height: 100%; border-radius: 3px; transition: width 0.5s; }
+        .product-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
+        .product-row:last-child { border-bottom: none; }
+        .product-rank { width: 20px; font-size: 11px; font-weight: 700; color: #94a3b8; }
+        .product-name { flex: 1; font-size: 13px; color: #334155; }
+        .product-qty { font-size: 12px; color: #64748b; }
+        .product-rev { font-size: 13px; font-weight: 600; color: #0f172a; }
+        /* Modal for status change */
+        .status-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:1000; align-items:center; justify-content:center; }
+        .status-modal.open { display:flex; }
+        .status-modal-box { background:white; border-radius:16px; padding:28px; width:360px; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
+        .status-modal-title { font-size:16px; font-weight:700; color:#0f172a; margin-bottom:16px; }
+        .status-option { display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:8px; cursor:pointer; transition:background 0.1s; }
+        .status-option:hover { background:#f8fafc; }
+        .status-option input[type=radio] { accent-color:#6366f1; }
+        .status-option-label { font-size:14px; font-weight:500; color:#334155; }
+        .admin-form-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+        .admin-form-field.full { grid-column:1 / -1; }
+        .admin-form-field label { display:block; font-size:11px; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
+        .admin-form-field input,
+        .admin-form-field select,
+        .admin-form-field textarea { width:100%; padding:10px 12px; border:1px solid #e2e8f0; border-radius:8px; font:inherit; font-size:13px; color:#0f172a; background:white; }
+        .admin-form-field textarea { resize:vertical; min-height:86px; }
+        .admin-form-field input:focus,
+        .admin-form-field select:focus,
+        .admin-form-field textarea:focus { outline:none; border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.12); }
+        .admin-file-row { display:grid; grid-template-columns:1fr auto; gap:8px; align-items:center; }
+        .admin-field-hint { margin-top:6px; font-size:12px; color:#64748b; line-height:1.45; }
+        .admin-image-preview { display:flex; align-items:center; gap:12px; margin-top:10px; padding:10px; border:1px dashed #cbd5e1; border-radius:10px; background:#f8fafc; color:#64748b; font-size:12px; }
+        .admin-image-preview img { width:58px; height:58px; object-fit:contain; border-radius:8px; background:white; border:1px solid #e2e8f0; }
+        .product-actions { display:flex; gap:8px; flex-wrap:wrap; }
+        .product-muted { opacity:.55; }
+        .product-muted td { background:#f8fafc; }
+        .admin-notice-stack { position:fixed; right:22px; top:22px; z-index:1200; display:flex; flex-direction:column; gap:10px; width:min(360px, calc(100vw - 32px)); }
+        .admin-notice { display:grid; grid-template-columns:36px 1fr; gap:10px; padding:12px; border:1px solid #dbeafe; border-radius:12px; background:white; box-shadow:0 16px 40px rgba(15,23,42,.14); animation:noticeIn .2s ease; }
+        .admin-notice i { width:36px; height:36px; border-radius:10px; display:flex; align-items:center; justify-content:center; background:#eff6ff; color:#2563eb; }
+        .admin-notice-title { font-size:13px; font-weight:800; color:#0f172a; }
+        .admin-notice-text { margin-top:2px; font-size:12px; color:#64748b; line-height:1.4; }
+        @keyframes noticeIn { from { transform:translateY(-8px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+        /* Loading */
+        .admin-loading { text-align:center; padding:60px; color:#94a3b8; }
+        /* Responsive */
+        @media(max-width:1100px){ .admin-stats{grid-template-columns:repeat(2,1fr);} .admin-charts{grid-template-columns:1fr;} }
+        @media(max-width:800px){
+            .admin-wrap{grid-template-columns:1fr;}
+            .admin-sidebar{height:auto;position:static;}
+            .admin-main{padding:20px 14px;}
+            .admin-header{align-items:flex-start;gap:12px;flex-direction:column;}
+            .admin-stats{grid-template-columns:repeat(2,1fr);}
+            .admin-search, .admin-filter-select{width:100%;}
+            .admin-search input{width:100%;}
+            .status-modal-box{width:min(360px,calc(100vw - 28px));padding:22px;}
+        }
+        @media(max-width:500px){
+            .admin-stats{grid-template-columns:1fr;}
+            .admin-table-head{padding:14px;}
+            .order-items-grid{grid-template-columns:1fr;}
+            .admin-form-grid{grid-template-columns:1fr;}
+        }
+    </style>
+</head>
+<body>
+<div id="adminAccessDenied" style="display:none; text-align:center; padding:100px 20px;">
+    <i class="fa-solid fa-shield-halved" style="font-size:50px; color:#ef4444; display:block; margin-bottom:20px;"></i>
+    <h2 style="margin-bottom:8px; font-size:24px;">Доступ запрещён</h2>
+    <p style="color:#64748b; margin-bottom:24px;">Эта страница доступна только администраторам.</p>
+    <a href="index.html" class="btn btn-primary">На главную</a>
+</div>
+
+<div id="adminApp" style="display:none;">
+<div class="admin-wrap">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+        <div class="admin-logo">
+            <a href="index.html" class="logo">Газпроект<span>Сервис Автоматика</span></a>
+            <div class="admin-badge">Admin Panel</div>
+        </div>
+        <nav class="admin-nav">
+            <div class="admin-nav-section">Обзор</div>
+            <div class="admin-nav-item active" data-section="dashboard"><i class="fa-solid fa-chart-line"></i> Дашборд</div>
+            <div class="admin-nav-section">Управление</div>
+            <div class="admin-nav-item" data-section="orders"><i class="fa-solid fa-box"></i> Заказы <span class="admin-nav-badge" id="newOrdersBadge">0</span></div>
+            <div class="admin-nav-item" data-section="requests"><i class="fa-solid fa-message"></i> Заявки <span class="admin-nav-badge" id="newRequestsBadge">0</span></div>
+            <div class="admin-nav-item" data-section="passwords"><i class="fa-solid fa-key"></i> Восстановление <span class="admin-nav-badge" id="newPasswordBadge">0</span></div>
+            <div class="admin-nav-item" data-section="users"><i class="fa-solid fa-users"></i> Пользователи</div>
+            <div class="admin-nav-item" data-section="products"><i class="fa-solid fa-microchip"></i> Товары</div>
+        </nav>
+        <div class="admin-sidebar-footer">
+            <div class="admin-sidebar-user">
+                <div class="admin-sidebar-avatar"><i class="fa-solid fa-user-shield"></i></div>
+                <div class="admin-sidebar-info">
+                    <div class="admin-sidebar-email" id="adminEmail">—</div>
+                    <div class="admin-sidebar-role">Администратор</div>
+                </div>
+            </div>
+            <div style="display:flex; gap:8px;">
+                <a href="profile.html" class="action-btn" style="flex:1; text-align:center;"><i class="fa-solid fa-user"></i> Профиль</a>
+                <button class="action-btn" id="adminLogoutBtn" style="flex:1;"><i class="fa-solid fa-right-from-bracket"></i> Выйти</button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="admin-main">
+
+        <!-- Dashboard -->
+        <div class="admin-content active" id="section-dashboard">
+            <div class="admin-header">
+                <div>
+                    <div class="admin-title">Дашборд</div>
+                    <div class="admin-subtitle">Обзор показателей магазина</div>
+                </div>
+                <button class="action-btn" onclick="loadDashboard()"><i class="fa-solid fa-arrows-rotate"></i> Обновить</button>
+            </div>
+            <div class="admin-stats" id="dashStats">
+                <div class="admin-stat-card"><div class="icon icon-blue"><i class="fa-solid fa-users"></i></div><div class="val">—</div><div class="lbl">Покупателей</div></div>
+                <div class="admin-stat-card"><div class="icon icon-green"><i class="fa-solid fa-box"></i></div><div class="val">—</div><div class="lbl">Всего заказов</div></div>
+                <div class="admin-stat-card"><div class="icon icon-purple"><i class="fa-solid fa-ruble-sign"></i></div><div class="val">—</div><div class="lbl">Выручка (₽)</div></div>
+                <div class="admin-stat-card"><div class="icon icon-orange"><i class="fa-solid fa-bell"></i></div><div class="val">—</div><div class="lbl">Новых заказов</div></div>
+            </div>
+            <div class="admin-charts">
+                <div class="admin-chart-card">
+                    <div class="admin-chart-title">Заказы по статусам</div>
+                    <div id="statusChart"><div class="admin-loading"><i class="fa-solid fa-circle-notch fa-spin"></i></div></div>
+                </div>
+                <div class="admin-chart-card">
+                    <div class="admin-chart-title">Топ товаров (по кол-ву)</div>
+                    <div id="topProductsChart"><div class="admin-loading"><i class="fa-solid fa-circle-notch fa-spin"></i></div></div>
+                </div>
+            </div>
+            <div class="admin-table-wrap">
+                <div class="admin-table-head"><div class="admin-table-title">Последние заказы</div></div>
+                <div class="admin-table-scroll"><table id="recentOrdersTable"><tbody><tr><td colspan="5" class="admin-loading"><i class="fa-solid fa-circle-notch fa-spin"></i></td></tr></tbody></table></div>
+            </div>
+        </div>
+
+        <!-- Orders -->
+        <div class="admin-content" id="section-orders">
+            <div class="admin-header">
+                <div>
+                    <div class="admin-title">Заказы</div>
+                    <div class="admin-subtitle" id="ordersSubtitle">Загрузка...</div>
+                </div>
+                <button class="action-btn" onclick="loadOrders()"><i class="fa-solid fa-arrows-rotate"></i> Обновить</button>
+            </div>
+            <div class="admin-table-wrap">
+                <div class="admin-table-head">
+                    <div class="admin-table-title">Все заказы</div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <div class="admin-search"><i class="fa-solid fa-magnifying-glass" style="color:#94a3b8;font-size:12px;"></i><input type="text" id="orderSearch" placeholder="Email или компания..."></div>
+                        <select class="admin-filter-select" id="orderStatusFilter">
+                            <option value="all">Все статусы</option>
+                            <option value="new">Новые</option>
+                            <option value="confirmed">Подтверждён</option>
+                            <option value="processing">В работе</option>
+                            <option value="shipped">Отгружен</option>
+                            <option value="delivered">Доставлен</option>
+                            <option value="cancelled">Отменён</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="admin-table-scroll"><table><thead><tr><th>ID</th><th>Клиент</th><th>Товары</th><th>Сумма</th><th>Дата</th><th>Статус</th><th>Действие</th></tr></thead><tbody id="ordersTableBody"><tr><td colspan="7" class="admin-loading"><i class="fa-solid fa-circle-notch fa-spin"></i></td></tr></tbody></table></div>
+            </div>
+        </div>
+
+        <!-- Contact Requests -->
+        <div class="admin-content" id="section-requests">
+            <div class="admin-header">
+                <div>
+                    <div class="admin-title">Заявки</div>
+                    <div class="admin-subtitle" id="requestsSubtitle">Загрузка...</div>
+                </div>
+                <button class="action-btn" onclick="loadContactRequests()"><i class="fa-solid fa-arrows-rotate"></i> Обновить</button>
+            </div>
+            <div class="admin-table-wrap">
+                <div class="admin-table-head">
+                    <div class="admin-table-title">Запросы с сайта</div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <div class="admin-search"><i class="fa-solid fa-magnifying-glass" style="color:#94a3b8;font-size:12px;"></i><input type="text" id="requestSearch" placeholder="Имя, телефон, тема..."></div>
+                        <select class="admin-filter-select" id="requestStatusFilter">
+                            <option value="all">Все заявки</option>
+                            <option value="new">Новые</option>
+                            <option value="done">Обработанные</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="admin-table-scroll"><table class="requests-table"><thead><tr><th>ID</th><th>Клиент</th><th>Тема</th><th>Сообщение</th><th>Дата</th><th>Статус</th><th>Действие</th></tr></thead><tbody id="requestsTableBody"><tr><td colspan="7" class="admin-loading"><i class="fa-solid fa-circle-notch fa-spin"></i></td></tr></tbody></table></div>
+            </div>
+        </div>
+
+        <!-- Users -->
+        <div class="admin-content" id="section-users">
+            <div class="admin-header">
+                <div>
+                    <div class="admin-title">Пользователи</div>
+                    <div class="admin-subtitle" id="usersSubtitle">Загрузка...</div>
+                </div>
+                <button class="action-btn" onclick="loadUsers()"><i class="fa-solid fa-arrows-rotate"></i> Обновить</button>
+            </div>
+            <div class="admin-table-wrap">
+                <div class="admin-table-head">
+                    <div class="admin-table-title">Все пользователи</div>
+                    <div class="admin-search"><i class="fa-solid fa-magnifying-glass" style="color:#94a3b8;font-size:12px;"></i><input type="text" id="userSearch" placeholder="Email или компания..."></div>
+                </div>
+                <div class="admin-table-scroll"><table class="users-table"><thead><tr><th>ID</th><th>Email</th><th>Компания</th><th>Телефон</th><th>Заказов</th><th>Потрачено</th><th>Роль</th><th>Дата</th><th>Действия</th></tr></thead><tbody id="usersTableBody"><tr><td colspan="9" class="admin-loading"><i class="fa-solid fa-circle-notch fa-spin"></i></td></tr></tbody></table></div>
+            </div>
+        </div>
+
+        <!-- Password reset requests -->
+        <div class="admin-content" id="section-passwords">
+            <div class="admin-header">
+                <div>
+                    <div class="admin-title">Восстановление доступа</div>
+                    <div class="admin-subtitle" id="passwordsSubtitle">Загрузка...</div>
+                </div>
+                <button class="action-btn" onclick="loadPasswordRequests()"><i class="fa-solid fa-arrows-rotate"></i> Обновить</button>
+            </div>
+            <div class="admin-table-wrap">
+                <div class="admin-table-head">
+                    <div class="admin-table-title">Заявки на сброс пароля</div>
+                    <div class="admin-search"><i class="fa-solid fa-magnifying-glass" style="color:#94a3b8;font-size:12px;"></i><input type="text" id="passwordSearch" placeholder="Email или компания..."></div>
+                    <select id="passwordStatusFilter" class="admin-filter-select">
+                        <option value="all">Все</option>
+                        <option value="new">Новые</option>
+                        <option value="done">Обработанные</option>
+                    </select>
+                </div>
+                <div class="admin-table-scroll"><table class="requests-table"><thead><tr><th>ID</th><th>Email</th><th>Компания</th><th>Телефон</th><th>Дата</th><th>Статус</th><th>Действие</th></tr></thead><tbody id="passwordsTableBody"><tr><td colspan="7" class="admin-loading"><i class="fa-solid fa-circle-notch fa-spin"></i></td></tr></tbody></table></div>
+            </div>
+        </div>
+
+        <!-- Products -->
+        <div class="admin-content" id="section-products">
+            <div class="admin-header">
+                <div><div class="admin-title">Товары</div><div class="admin-subtitle">Каталог продукции</div></div>
+                <button class="btn btn-primary" type="button" onclick="openProductModal()"><i class="fa-solid fa-plus"></i> Добавить товар</button>
+            </div>
+            <div class="admin-table-wrap">
+                <div class="admin-table-head"><div class="admin-table-title">Все товары</div><div class="admin-subtitle" id="productsSubtitle">Загрузка...</div></div>
+                <div class="admin-table-scroll"><table class="products-table"><thead><tr><th>ID</th><th>Фото</th><th>Название</th><th>Категория</th><th>Цена</th><th>Статус</th><th>Продажи</th><th>Действия</th></tr></thead><tbody id="productsTableBody"><tr><td colspan="8" class="admin-loading"><i class="fa-solid fa-circle-notch fa-spin"></i></td></tr></tbody></table></div>
+            </div>
+        </div>
+    </main>
+</div>
+</div>
+
+<!-- Status change modal -->
+<div class="status-modal" id="statusModal">
+    <div class="status-modal-box">
+        <div class="status-modal-title">Изменить статус заказа <span id="modalOrderId"></span></div>
+        <div id="statusOptions"></div>
+        <div style="display:flex;gap:10px;margin-top:20px;">
+            <button class="btn btn-primary" onclick="applyStatus()" style="flex:1;">Применить</button>
+            <button class="btn btn-outline" onclick="closeStatusModal()" style="flex:1;">Отмена</button>
+        </div>
+    </div>
+</div>
+
+<!-- User editor modal -->
+<div class="status-modal" id="userModal">
+    <div class="status-modal-box" style="width:560px;max-width:calc(100vw - 28px);">
+        <div class="status-modal-title" id="userModalTitle">Редактировать пользователя</div>
+        <form id="userForm" onsubmit="return false">
+            <input type="hidden" id="editUserId">
+            <div class="admin-form-grid">
+                <div class="admin-form-field full">
+                    <label for="editUserEmail">Email</label>
+                    <input id="editUserEmail" type="email" disabled>
+                </div>
+                <div class="admin-form-field">
+                    <label for="editUserCompany">Имя / компания</label>
+                    <input id="editUserCompany" type="text" maxlength="255">
+                </div>
+                <div class="admin-form-field">
+                    <label for="editUserPhone">Телефон</label>
+                    <input id="editUserPhone" type="tel" maxlength="50" data-phone-mask>
+                </div>
+                <div class="admin-form-field">
+                    <label for="editUserType">Тип аккаунта</label>
+                    <select id="editUserType">
+                        <option value="person">Физическое лицо</option>
+                        <option value="legal">Юридическое лицо</option>
+                    </select>
+                </div>
+                <div class="admin-form-field">
+                    <label for="editUserRole">Роль</label>
+                    <select id="editUserRole">
+                        <option value="0">Покупатель</option>
+                        <option value="1">Администратор</option>
+                    </select>
+                </div>
+                <div class="admin-form-field full">
+                    <label for="editUserAddress">Адрес</label>
+                    <input id="editUserAddress" type="text" maxlength="500">
+                </div>
+                <div class="admin-form-field full">
+                    <label for="editUserPassword">Новый пароль</label>
+                    <input id="editUserPassword" type="password" placeholder="Оставьте пустым, если не меняете">
+                </div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:20px;">
+                <button class="btn btn-primary" id="saveUserBtn" type="submit" style="flex:1;">Сохранить</button>
+                <button class="btn btn-outline" type="button" onclick="closeUserModal()" style="flex:1;">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Product editor modal -->
+<div class="status-modal" id="productModal">
+    <div class="status-modal-box" style="width:560px;max-width:calc(100vw - 28px);">
+        <div class="status-modal-title" id="productModalTitle">Добавить товар</div>
+        <form id="productForm" onsubmit="return false">
+            <input type="hidden" id="productId">
+            <div class="admin-form-grid">
+                <div class="admin-form-field full">
+                    <label for="productName">Название</label>
+                    <input id="productName" type="text" maxlength="255" placeholder="Например: Датчик метана СН4-Про">
+                </div>
+                <div class="admin-form-field">
+                    <label for="productPrice">Цена, ₽</label>
+                    <input id="productPrice" type="number" min="1" max="10000000" step="1" placeholder="25000">
+                </div>
+                <div class="admin-form-field">
+                    <label for="productCat">Категория</label>
+                    <select id="productCat">
+                        <option value="sensors">Датчик</option>
+                        <option value="analyzers">Анализатор</option>
+                        <option value="leak">Течеискатель</option>
+                    </select>
+                </div>
+                <div class="admin-form-field">
+                    <label for="productBadge">Метка</label>
+                    <select id="productBadge">
+                        <option value="">Без метки</option>
+                        <option value="new">New</option>
+                        <option value="hot">Hot</option>
+                    </select>
+                </div>
+                <div class="admin-form-field">
+                    <label for="productActive">Показ в каталоге</label>
+                    <select id="productActive">
+                        <option value="1">Показывать</option>
+                        <option value="0">Скрыть</option>
+                    </select>
+                </div>
+                <div class="admin-form-field full">
+                    <label for="productImg">Путь к изображению</label>
+                    <div class="admin-file-row">
+                        <input id="productImg" type="text" maxlength="255" placeholder="img/ch4pro-cut.png">
+                        <button class="action-btn" type="button" id="chooseProductImgBtn"><i class="fa-solid fa-folder-open"></i> Выбрать</button>
+                    </div>
+                    <div class="admin-field-hint">Рекомендуемый размер: 800×600 px, минимум 600×400 px. Форматы: PNG, JPG, WebP, GIF. Максимум 4 МБ.</div>
+                    <input id="productImgFile" type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+                    <div class="admin-image-preview" id="productImgPreview">
+                        <span>Изображение не выбрано</span>
+                    </div>
+                </div>
+                <div class="admin-form-field">
+                    <label for="productSpecGas">Газ / назначение</label>
+                    <input id="productSpecGas" type="text" maxlength="255" placeholder="CH₄ / метан">
+                </div>
+                <div class="admin-form-field">
+                    <label for="productSpecRange">Диапазон</label>
+                    <input id="productSpecRange" type="text" maxlength="255" placeholder="0–5% НКПРП">
+                </div>
+                <div class="admin-form-field">
+                    <label for="productSpecOutput">Интерфейс / выход</label>
+                    <input id="productSpecOutput" type="text" maxlength="255" placeholder="4–20 мА, RS-485, Modbus">
+                </div>
+                <div class="admin-form-field">
+                    <label for="productSpecProtection">Защита</label>
+                    <input id="productSpecProtection" type="text" maxlength="255" placeholder="IP65, IP67, взрывозащита">
+                </div>
+                <div class="admin-form-field full">
+                    <label for="productSpecAccuracy">Точность / особенность</label>
+                    <input id="productSpecAccuracy" type="text" maxlength="255" placeholder="Класс точности 0.025 или автономность 10 ч">
+                </div>
+                <div class="admin-form-field full">
+                    <label for="productDesc">Описание</label>
+                    <textarea id="productDesc" maxlength="1000" placeholder="Краткие характеристики и назначение"></textarea>
+                </div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:20px;">
+                <button class="btn btn-primary" id="saveProductBtn" type="submit" style="flex:1;">Сохранить</button>
+                <button class="btn btn-outline" type="button" onclick="closeProductModal()" style="flex:1;">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="toast" id="toast"><i class="fa-solid fa-circle-check"></i><span id="toastMsg">Готово!</span></div>
+
+<script src="script.js"></script>
+<script>
+const STATUS_LABELS = { new:'Новый', confirmed:'Подтверждён', processing:'В работе', shipped:'Отгружен', delivered:'Доставлен', cancelled:'Отменён' };
+const REQUEST_STATUS_LABELS = { new:'Новая', done:'Обработана' };
+const STATUS_COLORS = { new:'#1d4ed8', confirmed:'#7c3aed', processing:'#d97706', shipped:'#0284c7', delivered:'#16a34a', cancelled:'#dc2626' };
+const CAT_LABELS = { sensors:'Датчик', analyzers:'Анализатор', leak:'Течеискатель' };
+
+let currentStatusOrderId = null;
+let currentEditingProductId = null;
+let currentEditingUserId = null;
+let adminNotificationCursor = Date.now();
+let adminPollTimer = null;
+
+function fmtDate(ts) { return new Date(ts).toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric'}); }
+function fmtNum(n) { return Number(n).toLocaleString(); }
+function escapeHtml(value) {
+    return String(value || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function orderItemImageHtml(item) {
+    const isPath = item.img && (item.img.includes('/') || item.img.includes('.'));
+    if (!isPath) return `<span>${item.img || '📦'}</span>`;
+    return `<img src="${item.img}" alt="${item.name}" onerror="this.outerHTML='<span>📦</span>'">`;
+}
+function renderOrderItems(items) {
+    if (!items?.length) return '<div style="color:#94a3b8;font-size:13px;">Состав заказа пуст</div>';
+    return items.map(i => `
+        <div class="order-item-card">
+            <div class="order-item-img">${orderItemImageHtml(i)}</div>
+            <div>
+                <div class="order-item-name">${i.name}</div>
+                <div class="order-item-meta">${fmtNum(i.price)} ₽ × ${i.qty} · ${fmtNum(i.price * i.qty)} ₽</div>
+            </div>
+        </div>
+    `).join('');
+}
+function toggleOrderDetails(orderId) {
+    const row = document.getElementById(`orderDetails_${orderId}`);
+    const btn = document.getElementById(`orderToggle_${orderId}`);
+    if (!row || !btn) return;
+    const willOpen = row.hasAttribute('hidden');
+    row.toggleAttribute('hidden', !willOpen);
+    btn.classList.toggle('open', willOpen);
+    btn.querySelector('.toggle-text').textContent = willOpen ? 'Скрыть' : 'Состав';
+}
+
+// Nav
+document.querySelectorAll('.admin-nav-item[data-section]').forEach(item => {
+    item.addEventListener('click', () => {
+        document.querySelectorAll('.admin-nav-item').forEach(i=>i.classList.remove('active'));
+        document.querySelectorAll('.admin-content').forEach(c=>c.classList.remove('active'));
+        item.classList.add('active');
+        const sec = item.dataset.section;
+        document.getElementById('section-'+sec).classList.add('active');
+        if (sec==='orders') loadOrders();
+        else if (sec==='requests') loadContactRequests();
+        else if (sec==='passwords') loadPasswordRequests();
+        else if (sec==='users') loadUsers();
+        else if (sec==='products') loadProducts();
+        else if (sec==='dashboard') loadDashboard();
+    });
+});
+
+async function loadDashboard() {
+    try {
+        const data = await apiFetch('/api/admin/stats');
+        const s = data.stats || data;
+        // Stat cards
+        const cards = document.querySelectorAll('#dashStats .admin-stat-card .val');
+        if (cards[0]) cards[0].textContent = fmtNum(s.totalUsers);
+        if (cards[1]) cards[1].textContent = fmtNum(s.totalOrders);
+        if (cards[2]) cards[2].textContent = fmtNum(s.totalRev);
+        if (cards[3]) cards[3].textContent = s.newOrders;
+        document.getElementById('newOrdersBadge').textContent = s.newOrders;
+        document.getElementById('newPasswordBadge').textContent = s.newPasswordRequests || 0;
+
+        // Status chart
+        const total = s.byStatus.reduce((a,b)=>a+b.cnt,0)||1;
+        document.getElementById('statusChart').innerHTML = s.byStatus.length
+            ? s.byStatus.map(r=>`
+                <div class="status-bar">
+                    <div class="status-bar-label"><span class="badge ${r.status}"><span class="status-dot"></span>${STATUS_LABELS[r.status]||r.status}</span><span>${r.cnt} шт · ${fmtNum(r.rev)} ₽</span></div>
+                    <div class="status-bar-track"><div class="status-bar-fill" style="width:${Math.round(r.cnt/total*100)}%;background:${STATUS_COLORS[r.status]||'#94a3b8'};"></div></div>
+                </div>`).join('')
+            : '<p style="color:#94a3b8;font-size:13px;">Заказов пока нет</p>';
+
+        // Top products
+        document.getElementById('topProductsChart').innerHTML = s.topProducts.length
+            ? s.topProducts.map((p,i)=>`
+                <div class="product-row">
+                    <div class="product-rank">#${i+1}</div>
+                    <div class="product-name">${p.name}</div>
+                    <div class="product-qty">${p.total_qty} шт</div>
+                    <div class="product-rev">${fmtNum(p.total_rev)} ₽</div>
+                </div>`).join('')
+            : '<p style="color:#94a3b8;font-size:13px;">Нет данных</p>';
+
+        // Recent orders table
+        const tbl = document.querySelector('#recentOrdersTable tbody');
+        if (!s.recentOrders.length) {
+            tbl.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:30px;">Заказов нет</td></tr>';
+        } else {
+            tbl.innerHTML = s.recentOrders.map(o=>`
+                <tr>
+                    <td><b>#${o.id}</b></td>
+                    <td><div>${o.email}</div><div style="font-size:11px;color:#94a3b8;">${o.company||'—'}</div></td>
+                    <td>${fmtNum(o.total)} ₽</td>
+                    <td>${fmtDate(o.created_at)}</td>
+                    <td><span class="badge ${o.status}"><span class="status-dot"></span>${STATUS_LABELS[o.status]||o.status}</span></td>
+                </tr>`).join('');
+        }
+    } catch(e) { console.error(e); }
+}
+
+async function refreshRequestsBadge() {
+    try {
+        const [contacts, passwords] = await Promise.all([
+            apiFetch('/api/admin/contact-requests?status=new'),
+            apiFetch('/api/admin/password-reset-requests?status=new'),
+        ]);
+        document.getElementById('newRequestsBadge').textContent = contacts.total || 0;
+        document.getElementById('newPasswordBadge').textContent = passwords.total || 0;
+    } catch { /* ignore */ }
+}
+
+async function loadOrders() {
+    const status = document.getElementById('orderStatusFilter')?.value || 'all';
+    const search = document.getElementById('orderSearch')?.value || '';
+    const tbody = document.getElementById('ordersTableBody');
+    tbody.innerHTML = '<tr><td colspan="7" class="admin-loading"><i class="fa-solid fa-circle-notch fa-spin"></i></td></tr>';
+    try {
+        const params = new URLSearchParams({ status, search, limit:50 });
+        const data = await apiFetch('/api/admin/orders?'+params);
+        document.getElementById('ordersSubtitle').textContent = `Всего ${data.total} заказов`;
+        if (!data.orders.length) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:30px;">Заказов не найдено</td></tr>';
+            return;
+        }
+        tbody.innerHTML = data.orders.map(o=>`
+            <tr>
+                <td><b>#${o.id}</b></td>
+                <td><div style="font-size:13px;">${o.email}</div><div style="font-size:11px;color:#94a3b8;">${o.company||'—'}</div></td>
+                <td>
+                    <button class="action-btn order-items-toggle" id="orderToggle_${o.id}" onclick="toggleOrderDetails(${o.id})">
+                        <i class="fa-solid fa-chevron-down"></i>
+                        <span class="toggle-text">Состав</span>
+                        <span>(${o.items.length})</span>
+                    </button>
+                </td>
+                <td><b>${fmtNum(o.total)} ₽</b></td>
+                <td style="font-size:12px;color:#64748b;">${fmtDate(o.created_at)}</td>
+                <td><span class="badge ${o.status}"><span class="status-dot"></span>${STATUS_LABELS[o.status]||o.status}</span></td>
+                <td><button class="action-btn" onclick="openStatusModal(${o.id},'${o.status}')"><i class="fa-solid fa-pen"></i> Статус</button></td>
+            </tr>
+            <tr class="order-detail-row" id="orderDetails_${o.id}" hidden>
+                <td colspan="7">
+                    <div class="order-detail-panel">
+                        <div class="order-detail-title">Что заказал клиент</div>
+                        <div class="order-items-grid">${renderOrderItems(o.items)}</div>
+                    </div>
+                </td>
+            </tr>`).join('');
+    } catch(e) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#ef4444;padding:30px;">Ошибка загрузки</td></tr>'; }
+}
+
+async function loadUsers() {
+    const search = document.getElementById('userSearch')?.value || '';
+    const tbody = document.getElementById('usersTableBody');
+    tbody.innerHTML = '<tr><td colspan="9" class="admin-loading"><i class="fa-solid fa-circle-notch fa-spin"></i></td></tr>';
+    try {
+        const params = new URLSearchParams({ search, limit:50 });
+        const data = await apiFetch('/api/admin/users?'+params);
+        document.getElementById('usersSubtitle').textContent = `Всего ${data.total} пользователей`;
+        if (!data.users.length) {
+            tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:#94a3b8;padding:30px;">Нет пользователей</td></tr>';
+            return;
+        }
+        tbody.innerHTML = data.users.map(u=>`
+            <tr>
+                <td>${u.id}</td>
+                <td>${escapeHtml(u.email)}</td>
+                <td>${escapeHtml(u.company||'—')}</td>
+                <td style="font-size:12px;">${escapeHtml(u.phone||'—')}</td>
+                <td>${u.orders}</td>
+                <td>${fmtNum(u.spent)} ₽</td>
+                <td>${u.is_admin
+                    ? '<span class="badge" style="background:#faf5ff;color:#7c3aed;"><i class="fa-solid fa-shield-halved"></i> Админ</span>'
+                    : '<span class="badge" style="background:#f1f5f9;color:#64748b;"><i class="fa-solid fa-user"></i> Покупатель</span>'}</td>
+                <td style="font-size:12px;color:#94a3b8;">${fmtDate(u.created_at)}</td>
+                <td>
+                    <div class="product-actions">
+                        <button class="action-btn" onclick='openUserModal(${JSON.stringify(u).replace(/'/g,"&#39;")})'><i class="fa-solid fa-pen"></i></button>
+                        ${u.is_admin ? '' : `<button class="action-btn" onclick="deleteUser(${u.id})"><i class="fa-solid fa-trash"></i></button>`}
+                    </div>
+                </td>
+            </tr>`).join('');
+    } catch(e) { tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:#ef4444;padding:30px;">Ошибка загрузки</td></tr>'; }
+}
+
+function openUserModal(user) {
+    currentEditingUserId = user.id;
+    document.getElementById('userModalTitle').textContent = `Пользователь #${user.id}`;
+    document.getElementById('editUserId').value = user.id;
+    document.getElementById('editUserEmail').value = user.email || '';
+    document.getElementById('editUserCompany').value = user.company || '';
+    document.getElementById('editUserPhone').value = user.phone || '';
+    document.getElementById('editUserType').value = user.account_type || user.accountType || 'legal';
+    document.getElementById('editUserRole').value = user.is_admin ? '1' : '0';
+    document.getElementById('editUserAddress').value = user.address || '';
+    document.getElementById('editUserPassword').value = '';
+    initPhoneMasks(document.getElementById('userModal'));
+    document.getElementById('userModal').classList.add('open');
+}
+
+function closeUserModal() {
+    document.getElementById('userModal').classList.remove('open');
+    currentEditingUserId = null;
+}
+
+async function saveUser() {
+    if (!currentEditingUserId) return;
+    const payload = {
+        company: document.getElementById('editUserCompany').value.trim(),
+        phone: document.getElementById('editUserPhone').value.trim(),
+        address: document.getElementById('editUserAddress').value.trim(),
+        accountType: document.getElementById('editUserType').value,
+        isAdmin: document.getElementById('editUserRole').value === '1',
+        newPassword: document.getElementById('editUserPassword').value,
+    };
+    if (payload.company.length < 2) { showToast('Имя или компания минимум 2 символа'); return; }
+    if (payload.phone && window.isValidPhone && !isValidPhone(formatRuPhone(payload.phone))) { showToast('Введите корректный телефон'); return; }
+    if (payload.newPassword && payload.newPassword.length < 6) { showToast('Новый пароль минимум 6 символов'); return; }
+
+    const btn = document.getElementById('saveUserBtn');
+    btn.disabled = true;
+    btn.textContent = 'Сохраняем...';
+    try {
+        await apiFetch(`/api/admin/users/${currentEditingUserId}`, { method:'PUT', body:JSON.stringify(payload) });
+        closeUserModal();
+        showToast(payload.newPassword ? 'Пользователь обновлён, пароль изменён' : 'Пользователь обновлён');
+        loadUsers();
+    } catch (err) {
+        if (err.data?.error === 'weak_password') showToast('Новый пароль минимум 6 символов');
+        else if (err.data?.error === 'invalid_phone') showToast('Введите корректный телефон');
+        else showToast('Не удалось сохранить пользователя');
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Сохранить';
+    }
+}
+
+async function deleteUser(id) {
+    if (!confirm('Удалить пользователя? Его старые заказы останутся в истории как заказы удаленного пользователя.')) return;
+    try {
+        await apiFetch(`/api/admin/users/${id}`, { method:'DELETE', body:JSON.stringify({}) });
+        showToast('Пользователь удалён');
+        loadUsers();
+        loadDashboard();
+    } catch (err) {
+        if (err.data?.error === 'cannot_delete_self') showToast('Нельзя удалить самого себя');
+        else if (err.data?.error === 'cannot_delete_admin') showToast('Нельзя удалить администратора');
+        else showToast('Не удалось удалить пользователя');
+    }
+}
+
+async function loadContactRequests() {
+    const status = document.getElementById('requestStatusFilter')?.value || 'all';
+    const search = document.getElementById('requestSearch')?.value || '';
+    const tbody = document.getElementById('requestsTableBody');
+    tbody.innerHTML = '<tr><td colspan="7" class="admin-loading"><i class="fa-solid fa-circle-notch fa-spin"></i></td></tr>';
+    try {
+        const params = new URLSearchParams({ status, search });
+        const data = await apiFetch('/api/admin/contact-requests?' + params);
+        document.getElementById('requestsSubtitle').textContent = `Всего ${data.total} заявок`;
+        const newCount = data.requests.filter(r => r.status === 'new').length;
+        document.getElementById('newRequestsBadge').textContent = newCount;
+        if (!data.requests.length) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:30px;">Заявок не найдено</td></tr>';
+            return;
+        }
+        tbody.innerHTML = data.requests.map(r => `
+            <tr>
+                <td><b>#${r.id}</b></td>
+                <td>
+                    <div style="font-size:13px;font-weight:700;color:#0f172a;">${r.name}</div>
+                    <div style="font-size:12px;color:#64748b;">${r.phone}</div>
+                    <div style="font-size:11px;color:#94a3b8;">${r.company || '—'}</div>
+                </td>
+                <td><span class="badge" style="background:#eff6ff;color:#1d4ed8;">${r.topic}</span></td>
+                <td style="max-width:320px;white-space:normal;line-height:1.45;">${r.message}</td>
+                <td style="font-size:12px;color:#64748b;">${fmtDate(r.created_at)}</td>
+                <td><span class="badge ${r.status}"><span class="status-dot"></span>${REQUEST_STATUS_LABELS[r.status] || r.status}</span></td>
+                <td>${r.status === 'new'
+                    ? `<button class="action-btn" onclick="markRequestDone(${r.id})"><i class="fa-solid fa-check"></i> Обработана</button>`
+                    : '<span style="font-size:12px;color:#94a3b8;">Готово</span>'}</td>
+            </tr>
+        `).join('');
+    } catch(e) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#ef4444;padding:30px;">Ошибка загрузки</td></tr>';
+    }
+}
+
+async function markRequestDone(id) {
+    try {
+        await apiFetch(`/api/admin/contact-requests/${id}/status`, { method:'PATCH', body:JSON.stringify({status:'done'}) });
+        showToast('Заявка отмечена как обработанная');
+        loadContactRequests();
+    } catch {
+        showToast('Не удалось обновить заявку');
+    }
+}
+
+async function loadPasswordRequests() {
+    const status = document.getElementById('passwordStatusFilter')?.value || 'all';
+    const search = document.getElementById('passwordSearch')?.value || '';
+    const tbody = document.getElementById('passwordsTableBody');
+    tbody.innerHTML = '<tr><td colspan="7" class="admin-loading"><i class="fa-solid fa-circle-notch fa-spin"></i></td></tr>';
+    try {
+        const params = new URLSearchParams({ status, search });
+        const data = await apiFetch('/api/admin/password-reset-requests?' + params);
+        document.getElementById('passwordsSubtitle').textContent = `Всего ${data.total} заявок`;
+        const newCount = data.requests.filter(r => r.status === 'new').length;
+        document.getElementById('newPasswordBadge').textContent = newCount;
+        if (!data.requests.length) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:30px;">Заявок не найдено</td></tr>';
+            return;
+        }
+        tbody.innerHTML = data.requests.map(r => `
+            <tr>
+                <td><b>#${r.id}</b></td>
+                <td>${escapeHtml(r.email)}</td>
+                <td>${escapeHtml(r.company || '—')}</td>
+                <td>${escapeHtml(r.phone || '—')}</td>
+                <td style="font-size:12px;color:#64748b;">${fmtDate(r.created_at)}</td>
+                <td><span class="badge ${r.status}"><span class="status-dot"></span>${REQUEST_STATUS_LABELS[r.status] || r.status}</span></td>
+                <td>${r.status === 'new'
+                    ? `<button class="action-btn" onclick="markPasswordRequestDone(${r.id})"><i class="fa-solid fa-check"></i> Обработана</button>`
+                    : '<span style="font-size:12px;color:#94a3b8;">Готово</span>'}</td>
+            </tr>
+        `).join('');
+    } catch {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#ef4444;padding:30px;">Ошибка загрузки</td></tr>';
+    }
+}
+
+async function markPasswordRequestDone(id) {
+    try {
+        await apiFetch(`/api/admin/password-reset-requests/${id}/status`, { method:'PATCH', body:JSON.stringify({status:'done'}) });
+        showToast('Заявка восстановления обработана');
+        loadPasswordRequests();
+        refreshRequestsBadge();
+    } catch {
+        showToast('Не удалось обновить заявку');
+    }
+}
+
+async function loadProducts() {
+    const tbody = document.getElementById('productsTableBody');
+    tbody.innerHTML = '<tr><td colspan="8" class="admin-loading"><i class="fa-solid fa-circle-notch fa-spin"></i></td></tr>';
+    try {
+        const data = await apiFetch('/api/admin/products');
+        document.getElementById('productsSubtitle').textContent = `Всего ${data.products.length} товаров`;
+        tbody.innerHTML = data.products.map(p=>`
+            <tr class="${p.isActive ? '' : 'product-muted'}">
+                <td>${p.id}</td>
+                <td>${(() => {
+                    const isPath = p.img && (p.img.includes('/') || p.img.includes('.'));
+                    return isPath
+                        ? `<img src="${escapeHtml(p.img)}" alt="${escapeHtml(p.name)}" style="width:40px;height:40px;object-fit:contain;border-radius:8px;background:#f8fafc;" onerror="this.outerHTML='<span style=\\'font-size:22px;\\'>📦</span>'">`
+                        : `<span style="font-size:22px;">${escapeHtml(p.img || '📦')}</span>`;
+                })()}</td>
+                <td><b>${escapeHtml(p.name)}</b><div style="font-size:11px;color:#94a3b8;max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(p.desc)}</div></td>
+                <td><span class="badge" style="background:#f1f5f9;color:#475569;">${CAT_LABELS[p.cat]||escapeHtml(p.cat)}</span></td>
+                <td><b>${fmtNum(p.price)} ₽</b></td>
+                <td>${p.isActive ? '<span class="badge delivered">В каталоге</span>' : '<span class="badge cancelled">Скрыт</span>'}</td>
+                <td>${fmtNum(p.qty_sold || 0)} шт<br><span style="font-size:11px;color:#94a3b8;">${fmtNum(p.revenue || 0)} ₽</span></td>
+                <td>
+                    <div class="product-actions">
+                        <button class="action-btn" onclick='openProductModal(${JSON.stringify(p).replace(/'/g,"&#39;")})'><i class="fa-solid fa-pen"></i></button>
+                        <button class="action-btn" onclick="toggleProductStatus(${p.id}, ${p.isActive ? 'false' : 'true'})">${p.isActive ? 'Скрыть' : 'Вернуть'}</button>
+                    </div>
+                </td>
+            </tr>`).join('');
+    } catch(e) { tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:#ef4444;padding:30px;">Ошибка</td></tr>'; }
+}
+
+function openProductModal(product = null) {
+    currentEditingProductId = product?.id || null;
+    document.getElementById('productModalTitle').textContent = product ? `Редактировать товар #${product.id}` : 'Добавить товар';
+    document.getElementById('productId').value = product?.id || '';
+    document.getElementById('productName').value = product?.name || '';
+    document.getElementById('productPrice').value = product?.price || '';
+    document.getElementById('productCat').value = product?.cat || 'sensors';
+    document.getElementById('productBadge').value = product?.badge || '';
+    document.getElementById('productActive').value = product?.isActive === false ? '0' : '1';
+    document.getElementById('productImg').value = product?.img || '';
+    document.getElementById('productSpecGas').value = product?.specGas || '';
+    document.getElementById('productSpecRange').value = product?.specRange || '';
+    document.getElementById('productSpecOutput').value = product?.specOutput || '';
+    document.getElementById('productSpecProtection').value = product?.specProtection || '';
+    document.getElementById('productSpecAccuracy').value = product?.specAccuracy || '';
+    document.getElementById('productDesc').value = product?.desc || '';
+    renderProductImagePreview(product?.img || '');
+    document.getElementById('productModal').classList.add('open');
+}
+
+function closeProductModal() {
+    document.getElementById('productModal').classList.remove('open');
+    currentEditingProductId = null;
+}
+
+async function saveProduct() {
+    const payload = {
+        name: document.getElementById('productName').value.trim(),
+        price: Number(document.getElementById('productPrice').value),
+        cat: document.getElementById('productCat').value,
+        badge: document.getElementById('productBadge').value || null,
+        isActive: document.getElementById('productActive').value === '1',
+        img: document.getElementById('productImg').value.trim(),
+        specGas: document.getElementById('productSpecGas').value.trim(),
+        specRange: document.getElementById('productSpecRange').value.trim(),
+        specOutput: document.getElementById('productSpecOutput').value.trim(),
+        specProtection: document.getElementById('productSpecProtection').value.trim(),
+        specAccuracy: document.getElementById('productSpecAccuracy').value.trim(),
+        desc: document.getElementById('productDesc').value.trim(),
+    };
+
+    if (payload.name.length < 3) { showToast('Название минимум 3 символа'); return; }
+    if (!Number.isInteger(payload.price) || payload.price < 1) { showToast('Укажите корректную цену'); return; }
+    if (!payload.desc || payload.desc.length < 10) { showToast('Описание минимум 10 символов'); return; }
+    if (!payload.specGas || !payload.specRange || !payload.specOutput || !payload.specProtection || !payload.specAccuracy) {
+        showToast('Заполните характеристики для сравнения');
+        return;
+    }
+
+    const btn = document.getElementById('saveProductBtn');
+    btn.disabled = true;
+    btn.textContent = 'Сохраняем...';
+    try {
+        const url = currentEditingProductId ? `/api/admin/products/${currentEditingProductId}` : '/api/admin/products';
+        const method = currentEditingProductId ? 'PUT' : 'POST';
+        await apiFetch(url, { method, body: JSON.stringify(payload) });
+        closeProductModal();
+        showToast('Товар сохранён');
+        loadProducts();
+        loadDashboard();
+    } catch (err) {
+        if (err.data?.error === 'invalid_price') showToast('Проверьте цену товара');
+        else if (err.data?.error === 'invalid_category') showToast('Выберите категорию');
+        else if (err.data?.error === 'missing_specs') showToast('Заполните характеристики для сравнения');
+        else showToast('Не удалось сохранить товар');
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Сохранить';
+    }
+}
+
+async function toggleProductStatus(id, isActive) {
+    try {
+        await apiFetch(`/api/admin/products/${id}/status`, { method:'PATCH', body:JSON.stringify({ isActive }) });
+        showToast(isActive ? 'Товар возвращён в каталог' : 'Товар скрыт из каталога');
+        loadProducts();
+    } catch {
+        showToast('Не удалось изменить статус товара');
+    }
+}
+
+function renderProductImagePreview(src) {
+    const box = document.getElementById('productImgPreview');
+    if (!box) return;
+    if (!src) {
+        box.innerHTML = '<span>Изображение не выбрано</span>';
+        return;
+    }
+    box.innerHTML = `<img src="${escapeHtml(src)}" alt=""><span>${escapeHtml(src)}</span>`;
+}
+
+function readFileAsDataUrl(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(file);
+    });
+}
+
+async function uploadProductImage(file) {
+    if (!file) return;
+    if (!['image/png', 'image/jpeg', 'image/webp', 'image/gif'].includes(file.type)) {
+        showToast('Поддерживаются PNG, JPG, WebP или GIF');
+        return;
+    }
+    if (file.size > 4 * 1024 * 1024) {
+        showToast('Картинка слишком большая, максимум 4 МБ');
+        return;
+    }
+
+    const btn = document.getElementById('chooseProductImgBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Загружаем';
+    try {
+        const dataUrl = await readFileAsDataUrl(file);
+        const data = await apiFetch('/api/admin/product-images', {
+            method: 'POST',
+            body: JSON.stringify({ fileName: file.name, mime: file.type, dataUrl }),
+        });
+        document.getElementById('productImg').value = data.path;
+        renderProductImagePreview(data.path);
+        showToast('Изображение загружено');
+    } catch (err) {
+        if (err.data?.error === 'image_too_large') showToast('Картинка слишком большая');
+        else showToast('Не удалось загрузить изображение');
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-folder-open"></i> Выбрать';
+        document.getElementById('productImgFile').value = '';
+    }
+}
+
+function showAdminNotice(icon, title, text) {
+    let stack = document.getElementById('adminNoticeStack');
+    if (!stack) {
+        stack = document.createElement('div');
+        stack.id = 'adminNoticeStack';
+        stack.className = 'admin-notice-stack';
+        document.body.appendChild(stack);
+    }
+    const item = document.createElement('div');
+    item.className = 'admin-notice';
+    item.innerHTML = `
+        <i class="fa-solid ${icon}"></i>
+        <div>
+            <div class="admin-notice-title">${escapeHtml(title)}</div>
+            <div class="admin-notice-text">${escapeHtml(text)}</div>
+        </div>
+    `;
+    stack.prepend(item);
+    setTimeout(() => item.remove(), 6500);
+}
+
+function activeAdminSection() {
+    return document.querySelector('.admin-nav-item.active')?.dataset.section || 'dashboard';
+}
+
+async function pollAdminNotifications() {
+    try {
+        const data = await apiFetch('/api/admin/notifications?since=' + adminNotificationCursor);
+        adminNotificationCursor = data.now || Date.now();
+        document.getElementById('newOrdersBadge').textContent = data.counts?.newOrders || 0;
+        document.getElementById('newRequestsBadge').textContent = data.counts?.newRequests || 0;
+        document.getElementById('newPasswordBadge').textContent = data.counts?.newPasswordRequests || 0;
+
+        data.orders?.reverse().forEach(o => {
+            showAdminNotice('fa-box', 'Новый заказ', `${o.email} · ${fmtNum(o.total)} ₽`);
+        });
+        data.requests?.reverse().forEach(r => {
+            showAdminNotice('fa-message', 'Новая заявка', `${r.name} · ${r.topic}`);
+        });
+        data.passwordRequests?.reverse().forEach(r => {
+            showAdminNotice('fa-key', 'Запрос восстановления', r.email);
+        });
+
+        const section = activeAdminSection();
+        if (data.orders?.length && section === 'orders') loadOrders();
+        if (data.requests?.length && section === 'requests') loadContactRequests();
+        if (data.passwordRequests?.length && section === 'passwords') loadPasswordRequests();
+        if (data.orders?.length && section === 'dashboard') loadDashboard();
+    } catch { /* keep polling quietly */ }
+}
+
+function startAdminNotifications() {
+    adminNotificationCursor = Date.now();
+    clearInterval(adminPollTimer);
+    adminPollTimer = setInterval(pollAdminNotifications, 7000);
+}
+
+// Status modal
+function openStatusModal(orderId, currentStatus) {
+    currentStatusOrderId = orderId;
+    document.getElementById('modalOrderId').textContent = '#'+orderId;
+    document.getElementById('statusOptions').innerHTML = Object.entries(STATUS_LABELS).map(([val,label])=>`
+        <div class="status-option">
+            <input type="radio" name="newStatus" value="${val}" id="s_${val}" ${val===currentStatus?'checked':''}>
+            <label for="s_${val}" class="status-option-label"><span class="badge ${val}"><span class="status-dot"></span>${label}</span></label>
+        </div>`).join('');
+    document.getElementById('statusModal').classList.add('open');
+}
+
+function closeStatusModal() { document.getElementById('statusModal').classList.remove('open'); currentStatusOrderId=null; }
+
+async function applyStatus() {
+    const sel = document.querySelector('input[name="newStatus"]:checked');
+    if (!sel || !currentStatusOrderId) return;
+    try {
+        await apiFetch(`/api/admin/orders/${currentStatusOrderId}/status`, { method:'PATCH', body:JSON.stringify({status:sel.value}) });
+        closeStatusModal();
+        showToast('Статус обновлён');
+        loadOrders();
+        loadDashboard();
+    } catch { showToast('Ошибка обновления статуса'); }
+}
+
+// Search debounce
+let searchDebounce;
+document.getElementById('orderSearch')?.addEventListener('input', ()=>{ clearTimeout(searchDebounce); searchDebounce=setTimeout(loadOrders,400); });
+document.getElementById('orderStatusFilter')?.addEventListener('change', loadOrders);
+document.getElementById('userSearch')?.addEventListener('input', ()=>{ clearTimeout(searchDebounce); searchDebounce=setTimeout(loadUsers,400); });
+document.getElementById('requestSearch')?.addEventListener('input', ()=>{ clearTimeout(searchDebounce); searchDebounce=setTimeout(loadContactRequests,400); });
+document.getElementById('requestStatusFilter')?.addEventListener('change', loadContactRequests);
+document.getElementById('passwordSearch')?.addEventListener('input', ()=>{ clearTimeout(searchDebounce); searchDebounce=setTimeout(loadPasswordRequests,400); });
+document.getElementById('passwordStatusFilter')?.addEventListener('change', loadPasswordRequests);
+
+document.getElementById('adminLogoutBtn')?.addEventListener('click', async () => {
+    await apiFetch('/api/logout', {method:'POST',body:JSON.stringify({})});
+    window.location.href = 'index.html';
+});
+
+document.getElementById('statusModal')?.addEventListener('click', e=>{ if(e.target===document.getElementById('statusModal'))closeStatusModal(); });
+document.getElementById('productModal')?.addEventListener('click', e=>{ if(e.target===document.getElementById('productModal'))closeProductModal(); });
+document.getElementById('userModal')?.addEventListener('click', e=>{ if(e.target===document.getElementById('userModal'))closeUserModal(); });
+document.getElementById('productForm')?.addEventListener('submit', saveProduct);
+document.getElementById('userForm')?.addEventListener('submit', saveUser);
+document.getElementById('chooseProductImgBtn')?.addEventListener('click', () => document.getElementById('productImgFile')?.click());
+document.getElementById('productImgFile')?.addEventListener('change', e => uploadProductImage(e.target.files?.[0]));
+document.getElementById('productImg')?.addEventListener('input', e => renderProductImagePreview(e.target.value.trim()));
+
+document.addEventListener('DOMContentLoaded', async () => {
+    // Check auth + admin
+    try {
+        const data = await apiFetch('/api/me');
+        if (!data.user || !data.user.isAdmin) {
+            document.getElementById('adminAccessDenied').style.display = 'block';
+            return;
+        }
+        meUser = data.user;
+        document.getElementById('adminApp').style.display = 'block';
+        document.getElementById('adminEmail').textContent = data.user.email;
+        loadDashboard();
+        refreshRequestsBadge();
+        startAdminNotifications();
+    } catch {
+        document.getElementById('adminAccessDenied').style.display = 'block';
+    }
+});
+</script>
+</body>
+</html>

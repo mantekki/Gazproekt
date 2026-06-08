@@ -1,0 +1,5 @@
+node_modules/
+gastech.db
+gastech.db-journal
+gastech.db-wal
+gastech.db-shm
