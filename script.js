@@ -883,8 +883,57 @@ function initCart() {
 function initBurger() {
     const burger = document.getElementById('burger');
     const menu = document.getElementById('mobileMenu');
-    burger?.addEventListener('click', () => { burger.classList.toggle('open'); menu?.classList.toggle('open'); });
-    menu?.querySelectorAll('a').forEach(a => { a.addEventListener('click', () => { burger?.classList.remove('open'); menu.classList.remove('open'); }); });
+    const header = document.querySelector('.header');
+    if (!burger || !menu) return;
+
+    const syncPosition = () => {
+        const bottom = header ? Math.max(0, Math.round(header.getBoundingClientRect().bottom)) : 64;
+        menu.style.setProperty('--mobile-menu-top', `${bottom}px`);
+    };
+
+    const close = () => {
+        burger.classList.remove('open');
+        menu.classList.remove('open');
+        burger.setAttribute('aria-expanded', 'false');
+        menu.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('menu-open');
+    };
+
+    const open = () => {
+        syncPosition();
+        burger.classList.add('open');
+        menu.classList.add('open');
+        burger.setAttribute('aria-expanded', 'true');
+        menu.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('menu-open');
+    };
+
+    burger.setAttribute('role', 'button');
+    burger.setAttribute('tabindex', '0');
+    burger.setAttribute('aria-controls', 'mobileMenu');
+    burger.setAttribute('aria-expanded', 'false');
+    menu.setAttribute('aria-hidden', 'true');
+
+    burger.addEventListener('click', () => {
+        if (menu.classList.contains('open')) close();
+        else open();
+    });
+    burger.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        e.preventDefault();
+        burger.click();
+    });
+    menu.querySelectorAll('a').forEach(a => { a.addEventListener('click', close); });
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 1100) close();
+        else if (menu.classList.contains('open')) syncPosition();
+    }, { passive: true });
+    window.addEventListener('scroll', () => {
+        if (menu.classList.contains('open')) syncPosition();
+    }, { passive: true });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && menu.classList.contains('open')) close();
+    });
 }
 
 // ─── SCROLL ANIMATIONS ───────────────────────────────────────────
